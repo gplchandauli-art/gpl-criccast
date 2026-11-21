@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPL CricCast Pro - Live Cricket Broadcast Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
+    .font-sports { font-family: 'Teko', sans-serif; letter-spacing: 0.04em; }
+    .chroma-bg { background-color: #00b140 !important; }
+    @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes popBanner { 0% { transform: scale(0.7); opacity: 0; } 15% { transform: scale(1.05); opacity: 1; } 85% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0; } }
+    .animate-ticker { animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-event { animation: popBanner 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-between">
+
+  <!-- EVENT POPUP BANNER (4, 6, WICKET) -->
+  <div id="eventBanner" class="hidden fixed inset-0 pointer-events-none flex items-center justify-center z-50">
+    <div id="eventBox" class="px-10 py-4 rounded-2xl border-2 shadow-2xl text-center animate-event">
+      <div id="eventTitle" class="font-sports text-6xl md:text-8xl font-bold uppercase tracking-wider drop-shadow-lg">FOUR!</div>
+      <div id="eventSub" class="text-sm md:text-lg font-bold uppercase tracking-widest opacity-90">CRACKING SHOT TO THE BOUNDARY</div>
+    </div>
+  </div>
+
+  <!-- ADMIN CONTROL PANEL (Hidden in Overlay Mode) -->
+  <div id="controlPanel" class="max-w-5xl w-full mx-auto p-3 md:p-6 space-y-4 pb-36">
+    <!-- Top Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-4 rounded-2xl shadow-lg">
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 font-sports font-bold text-2xl px-3 py-1 rounded-xl shadow">GPL</div>
+        <div>
+          <h1 class="text-lg md:text-xl font-extrabold tracking-tight">GPL CricCast Pro</h1>
+          <div class="flex items-center gap-2 text-xs">
+            <span id="syncStatus" class="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Connecting Cloud...
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <input id="roomInput" type="text" value="GPL2026" placeholder="Room ID" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold uppercase w-24 text-center focus:outline-none focus:border-amber-500" />
+        <button onclick="changeRoom()" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700">Set Room</button>
+        <button onclick="copyOverlayLink()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow transition">
+          Copy Prism Live URL
+        </button>
+        <button onclick="toggleOverlayMode(true)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-lg shadow transition">
+          Overlay Mode
+        </button>
+      </div>
+    </div>
+
+    <!-- Match & Teams Setup -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+      <div>
+        <label class="text-[11px] uppercase font-bold text-slate-400">Batting Team</label>
+        <input id="batTeam" oninput="updateField('batTeam', this.value)" type="text" value="GPL WARRIORS" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-bold uppercase" />
+      </div>
+      <div>
+        <label class="text-[11px] uppercase font-bold text-slate-400">Bowling Team</label>
+        <input id="bowlTeam" oninput="updateField('bowlTeam', this.value)" type="text" value="DDU TITANS" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-bold uppercase" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[11px] uppercase font-bold text-slate-400">Target (0 = 1st Inn)</label>
+          <input id="target" oninput="updateField('target', Number(this.value))" type="number" value="0" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-bold" />
+        </div>
+        <div>
+          <label class="text-[11px] uppercase font-bold text-slate-400">Theme</label>
+          <select id="theme" onchange="updateField('theme', this.value)" class="mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-2 text-sm font-bold">
+            <option value="gold">IPL Gold</option>
+            <option value="blue">T20 Royal Blue</option>
+            <option value="emerald">Emerald Pro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Players Info -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-[11px] font-bold text-amber-400 uppercase"><span>Striker (*)</span><span>Runs / Balls</span></div>
+        <div class="flex gap-1.5">
+          <input id="strikerName" oninput="updateField('strikerName', this.value)" type="text" value="A. SHARMA" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold uppercase" />
+          <input id="strikerRuns" oninput="updateField('strikerRuns', Number(this.value))" type="number" value="24" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+          <input id="strikerBalls" oninput="updateField('strikerBalls', Number(this.value))" type="number" value="14" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-[11px] font-bold text-slate-400 uppercase"><span>Non-Striker</span><span>Runs / Balls</span></div>
+        <div class="flex gap-1.5">
+          <input id="nonStrikerName" oninput="updateField('nonStrikerName', this.value)" type="text" value="R. VERMA" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold uppercase" />
+          <input id="nonStrikerRuns" oninput="updateField('nonStrikerRuns', Number(this.value))" type="number" value="12" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+          <input id="nonStrikerBalls" oninput="updateField('nonStrikerBalls', Number(this.value))" type="number" value="9" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-[11px] font-bold text-cyan-400 uppercase"><span>Bowler</span><span>Wkts - Runs</span></div>
+        <div class="flex gap-1.5">
+          <input id="bowlerName" oninput="updateField('bowlerName', this.value)" type="text" value="V. YADAV" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-bold uppercase" />
+          <input id="bowlerWkts" oninput="updateField('bowlerWkts', Number(this.value))" type="number" value="1" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+          <input id="bowlerRuns" oninput="updateField('bowlerRuns', Number(this.value))" type="number" value="18" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-sm font-bold text-center" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Ball-by-Ball Scoring Buttons -->
+    <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Ball-by-Ball Scoring Controls</span>
+        <div class="flex gap-2">
+          <button onclick="swapStrike()" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700">Swap Strike</button>
+          <button onclick="newOver()" class="bg-indigo-600 hover:bg-indigo-500 text-xs font-bold px-3 py-1.5 rounded-lg">New Over</button>
+          <button onclick="resetMatch()" class="bg-rose-950 hover:bg-rose-900 text-rose-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-rose-800">Reset</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <button onclick="scoreBall(0, true, '0')" class="bg-slate-800 hover:bg-slate-700 py-3.5 rounded-xl font-extrabold text-lg border border-slate-700">0 (Dot)</button>
+        <button onclick="scoreBall(1, true, '1')" class="bg-slate-800 hover:bg-slate-700 py-3.5 rounded-xl font-extrabold text-lg border border-slate-700">1</button>
+        <button onclick="scoreBall(2, true, '2')" class="bg-slate-800 hover:bg-slate-700 py-3.5 rounded-xl font-extrabold text-lg border border-slate-700">2</button>
+        <button onclick="scoreBall(3, true, '3')" class="bg-slate-800 hover:bg-slate-700 py-3.5 rounded-xl font-extrabold text-lg border border-slate-700">3</button>
+        <button onclick="scoreBall(4, true, '4', 'FOUR!')" class="bg-blue-600 hover:bg-blue-500 py-3.5 rounded-xl font-extrabold text-lg shadow-lg">4 (FOUR)</button>
+        <button onclick="scoreBall(6, true, '6', 'SIX!')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 py-3.5 rounded-xl font-extrabold text-lg shadow-lg">6 (SIX)</button>
+        <button onclick="scoreWicket()" class="bg-rose-600 hover:bg-rose-500 py-3.5 rounded-xl font-extrabold text-lg shadow-lg">OUT (W)</button>
+        <button onclick="scoreExtra('WD')" class="bg-purple-700 hover:bg-purple-600 py-3.5 rounded-xl font-extrabold text-sm">WIDE +1</button>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="scoreExtra('NB')" class="bg-purple-800/80 hover:bg-purple-700 py-2.5 rounded-xl font-bold text-xs">NO BALL +1</button>
+        <button onclick="scoreBall(1, true, '1B')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl font-bold text-xs">BYE +1</button>
+        <button onclick="scoreBall(1, true, '1LB')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl font-bold text-xs">LEG BYE +1</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXIT OVERLAY BUTTON (Floating small button when in Overlay Mode) -->
+  <button id="exitOverlayBtn" onclick="toggleOverlayMode(false)" class="hidden fixed top-3 right-3 bg-black/60 hover:bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-full z-50 border border-white/20">
+    Exit Overlay
+  </button>
+
+  <!-- LIVE TV BROADCAST SCOREBOARD TICKER -->
+  <div class="fixed bottom-0 left-0 right-0 p-2 md:p-4 z-40 pointer-events-none">
+    <div id="tickerCard" class="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-white/20 animate-ticker bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950">
+      <div class="grid grid-cols-12 items-center text-white">
+        
+        <!-- Team & Main Score (Left) -->
+        <div id="scoreAccent" class="col-span-5 md:col-span-4 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 px-3 md:px-5 py-2.5 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-extrabold uppercase tracking-wider opacity-80">GPL SPORTS LIVE</div>
+            <div id="dispBatTeam" class="font-sports text-2xl md:text-3xl font-bold leading-none uppercase">GPL WARRIORS</div>
+          </div>
+          <div class="text-right">
+            <div class="font-sports text-3xl md:text-5xl font-bold leading-none">
+              <span id="dispRuns">42</span>/<span id="dispWkts">1</span>
+            </div>
+            <div class="text-xs md:text-sm font-extrabold">OVERS <span id="dispOvers">4.2</span></div>
+          </div>
+        </div>
+
+        <!-- Batters (Center) -->
+        <div class="col-span-4 md:col-span-4 px-3 md:px-5 py-2 border-r border-white/10 space-y-1">
+          <div class="flex justify-between items-center text-xs md:text-sm font-extrabold text-amber-400">
+            <span id="dispStriker">▶ A. SHARMA*</span>
+            <span id="dispStrikerScore">24 <span class="text-[11px] font-normal text-slate-300">(14)</span></span>
+          </div>
+          <div class="flex justify-between items-center text-xs md:text-sm font-semibold text-slate-300">
+            <span id="dispNonStriker">R. VERMA</span>
+            <span id="dispNonStrikerScore">12 <span class="text-[11px] font-normal text-slate-400">(9)</span></span>
+          </div>
+        </div>
+
+        <!-- Bowler & This Over (Right) -->
+        <div class="col-span-3 md:col-span-4 px-3 md:px-5 py-2 flex flex-col justify-between">
+          <div class="flex justify-between items-center text-xs md:text-sm font-bold">
+            <span id="dispBowler" class="text-cyan-300 truncate">V. YADAV</span>
+            <span id="dispBowlerFig" class="font-extrabold">1-18</span>
+          </div>
+          <div class="flex items-center justify-between gap-1 mt-1">
+            <div id="dispBalls" class="flex items-center gap-1 overflow-x-auto"></div>
+            <span id="dispCrr" class="hidden md:inline text-[11px] font-bold text-amber-300">CRR: 9.69</span>
+          </div>
+        </div>
+
+      </div>
+      <!-- Bottom Info Bar -->
+      <div class="bg-black/60 px-4 py-1 flex justify-between items-center text-[11px] font-bold text-slate-300 border-t border-white/10">
+        <span id="dispMatchInfo">GPL CRICCAST PRO • LIVE BROADCAST</span>
+        <span id="dispTargetInfo" class="text-amber-400">1ST INNINGS</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Permanent Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCWtQ1huWR3DEK0ZF1B2_-VNfWlFU58eP0",
+      authDomain: "gpl-criccast.firebaseapp.com",
+      databaseURL: "https://gpl-criccast-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "gpl-criccast",
+      storageBucket: "gpl-criccast.firebasestorage.app",
+      messagingSenderId: "553930628703",
+      appId: "1:553930628703:web:01566d31a9b466e33a05ea",
+      measurementId: "G-HTZJHY5EFP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const params = new URLSearchParams(window.location.search);
+    let roomId = (params.get('room') || 'GPL2026').toUpperCase();
+    const isOverlayParam = params.get('mode') === 'overlay';
+
+    let state = {
+      batTeam: 'GPL WARRIORS', bowlTeam: 'DDU TITANS', runs: 42, wkts: 1, balls: 26,
+      target: 0, theme: 'gold', strikerName: 'A. SHARMA', strikerRuns: 24, strikerBalls: 14,
+      nonStrikerName: 'R. VERMA', nonStrikerRuns: 12, nonStrikerBalls: 9,
+      bowlerName: 'V. YADAV', bowlerWkts: 1, bowlerRuns: 18, thisOver: ['1', '4', '0', '1'],
+      eventTrigger: null
+    };
+
+    document.getElementById('roomInput').value = roomId;
+    if (isOverlayParam) toggleOverlayMode(true);
+
+    let roomRef = db.ref('rooms/' + roomId);
+
+    function connectRoom() {
+      roomRef.off();
+      roomRef = db.ref('rooms/' + roomId);
+      roomRef.on('value', (snap) => {
+        document.getElementById('syncStatus').innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> GPL Cloud Live (' + roomId + ')';
+        if (snap.exists()) {
+          state = { ...state, ...snap.val() };
+          renderUI();
+        } else {
+          roomRef.set(state);
+        }
+      });
+    }
+    connectRoom();
+
+    function saveState() {
+      roomRef.set(state);
+      renderUI();
+    }
+
+    function updateField(key, val) {
+      state[key] = val;
+      saveState();
+    }
+
+    function changeRoom() {
+      const val = document.getElementById('roomInput').value.trim().toUpperCase();
+      if (val) { roomId = val; connectRoom(); }
+    }
+
+    function scoreBall(r, legal, label, banner = null) {
+      state.runs += r;
+      state.strikerRuns += r;
+      if (legal) { state.balls += 1; state.strikerBalls += 1; }
+      state.bowlerRuns += r;
+      state.thisOver = [...(state.thisOver || []), label];
+      if (r % 2 === 1) swapStrike(false);
+      if (banner) state.eventTrigger = { type: banner, time: Date.now() };
+      saveState();
+    }
+
+    function scoreExtra(type) {
+      state.runs += 1;
+      state.bowlerRuns += 1;
+      state.thisOver = [...(state.thisOver || []), type];
+      saveState();
+    }
+
+    function scoreWicket() {
+      state.wkts = Math.min(10, state.wkts + 1);
+      state.balls += 1;
+      state.strikerBalls += 1;
+      state.bowlerWkts += 1;
+      state.thisOver = [...(state.thisOver || []), 'W'];
+      state.strikerName = 'NEW BATTER';
+      state.strikerRuns = 0;
+      state.strikerBalls = 0;
+      state.eventTrigger = { type: 'WICKET!', time: Date.now() };
+      saveState();
+    }
+
+    function swapStrike(save = true) {
+      [state.strikerName, state.nonStrikerName] = [state.nonStrikerName, state.strikerName];
+      [state.strikerRuns, state.nonStrikerRuns] = [state.nonStrikerRuns, state.strikerRuns];
+      [state.strikerBalls, state.nonStrikerBalls] = [state.nonStrikerBalls, state.strikerBalls];
+      if (save) saveState();
+    }
+
+    function newOver() {
+      state.thisOver = [];
+      swapStrike(false);
+      saveState();
+    }
+
+    function resetMatch() {
+      if (!confirm('Reset full match score?')) return;
+      state.runs = 0; state.wkts = 0; state.balls = 0; state.thisOver = [];
+      state.strikerRuns = 0; state.strikerBalls = 0; state.nonStrikerRuns = 0; state.nonStrikerBalls = 0;
+      state.bowlerWkts = 0; state.bowlerRuns = 0;
+      saveState();
+    }
+
+    let lastBannerTime = 0;
+    function renderUI() {
+      ['batTeam','bowlTeam','target','theme','strikerName','strikerRuns','strikerBalls','nonStrikerName','nonStrikerRuns','nonStrikerBalls','bowlerName','bowlerWkts','bowlerRuns'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && document.activeElement !== el) el.value = state[id];
+      });
+
+      const overs = `${Math.floor(state.balls / 6)}.${state.balls % 6}`;
+      const crr = state.balls > 0 ? ((state.runs / state.balls) * 6).toFixed(2) : '0.00';
+
+      document.getElementById('dispBatTeam').textContent = state.batTeam;
+      document.getElementById('dispRuns').textContent = state.runs;
+      document.getElementById('dispWkts').textContent = state.wkts;
+      document.getElementById('dispOvers').textContent = overs;
+      document.getElementById('dispStriker').textContent = `▶ ${state.strikerName}*`;
+      document.getElementById('dispStrikerScore').innerHTML = `${state.strikerRuns} <span class="text-[11px] font-normal text-slate-300">(${state.strikerBalls})</span>`;
+      document.getElementById('dispNonStriker').textContent = state.nonStrikerName;
+      document.getElementById('dispNonStrikerScore').innerHTML = `${state.nonStrikerRuns} <span class="text-[11px] font-normal text-slate-400">(${state.nonStrikerBalls})</span>`;
+      document.getElementById('dispBowler').textContent = state.bowlerName;
+      document.getElementById('dispBowlerFig').textContent = `${state.bowlerWkts}-${state.bowlerRuns}`;
+      document.getElementById('dispCrr').textContent = `CRR: ${crr}`;
+      document.getElementById('dispMatchInfo').textContent = `${state.batTeam} VS ${state.bowlTeam} • GPL CRICCAST PRO`;
+      document.getElementById('dispTargetInfo').textContent = state.target > 0 ? `TARGET: ${state.target} (NEED ${Math.max(0, state.target - state.runs)})` : `1ST INNINGS • CRR ${crr}`;
+
+      const ballsDiv = document.getElementById('dispBalls');
+      ballsDiv.innerHTML = (state.thisOver || []).map(b => {
+        let cls = 'bg-slate-800 text-white';
+        if (b === '4') cls = 'bg-blue-600 text-white';
+        if (b === '6') cls = 'bg-amber-400 text-slate-950';
+        if (b === 'W') cls = 'bg-rose-600 text-white';
+        return `<span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold ${cls}">${b}</span>`;
+      }).join('');
+
+      const accent = document.getElementById('scoreAccent');
+      if (state.theme === 'blue') accent.className = 'col-span-5 md:col-span-4 bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 px-3 md:px-5 py-2.5 flex items-center justify-between';
+      else if (state.theme === 'emerald') accent.className = 'col-span-5 md:col-span-4 bg-gradient-to-r from-emerald-400 to-teal-600 text-slate-950 px-3 md:px-5 py-2.5 flex items-center justify-between';
+      else accent.className = 'col-span-5 md:col-span-4 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 px-3 md:px-5 py-2.5 flex items-center justify-between';
+
+      if (state.eventTrigger && state.eventTrigger.time > lastBannerTime && (Date.now() - state.eventTrigger.time < 4000)) {
+        lastBannerTime = state.eventTrigger.time;
+        showEventBanner(state.eventTrigger.type);
+      }
+    }
+
+    function showEventBanner(type) {
+      const banner = document.getElementById('eventBanner');
+      const box = document.getElementById('eventBox');
+      const title = document.getElementById('eventTitle');
+      const sub = document.getElementById('eventSub');
+      title.textContent = type;
+      if (type === 'SIX!') {
+        box.className = 'px-12 py-5 rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 shadow-2xl text-center animate-event';
+        sub.textContent = 'MAXIMUM! OUT OF THE PARK';
+      } else if (type === 'WICKET!') {
+        box.className = 'px-12 py-5 rounded-2xl border-2 border-rose-300 bg-gradient-to-r from-rose-600 to-red-800 text-white shadow-2xl text-center animate-event';
+        sub.textContent = 'CLEANED UP! BIG BREAKTHROUGH';
+      } else {
+        box.className = 'px-12 py-5 rounded-2xl border-2 border-blue-300 bg-gradient-to-r from-blue-600 to-indigo-800 text-white shadow-2xl text-center animate-event';
+        sub.textContent = 'CRACKING BOUNDARY FOUR';
+      }
+      banner.classList.remove('hidden');
+      setTimeout(() => banner.classList.add('hidden'), 3200);
+    }
+
+    function toggleOverlayMode(enable) {
+      document.getElementById('controlPanel').classList.toggle('hidden', enable);
+      document.getElementById('exitOverlayBtn').classList.toggle('hidden', !enable || isOverlayParam);
+      document.body.classList.toggle('chroma-bg', enable);
+    }
+
+    function copyOverlayLink() {
+      const url = `${window.location.origin}${window.location.pathname}?mode=overlay&room=${roomId}`;
+      navigator.clipboard.writeText(url);
+      alert('Prism Live Overlay URL Copied:\n' + url);
+    }
+  </script>
+</body>
+</html>
