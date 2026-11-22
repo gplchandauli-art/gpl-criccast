@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" class="bg-transparent">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,11 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Noto+Sans+Devanagari:wght@500;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --chroma-green: #00b140;
             --accent-primary: #0ea5e9;
             --accent-secondary: #f59e0b;
-            --bg-dark-1: #060b19;
-            --bg-dark-2: #0f172a;
         }
 
         body {
@@ -33,9 +30,11 @@
             font-family: 'Chakra Petch', 'Noto Sans Devanagari', sans-serif;
         }
 
-        /* Pure Chroma Key Mode for Prism Live / OBS */
+        /* 100% Native Transparent Mode for Prism Live Studio (No Chroma Key Needed) */
+        html.overlay-root,
         body.overlay-only {
-            background-color: var(--chroma-green) !important;
+            background: transparent !important;
+            background-color: rgba(0, 0, 0, 0) !important;
             background-image: none !important;
             overflow: hidden !important;
             margin: 0 !important;
@@ -53,11 +52,12 @@
             inset: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            background-color: var(--chroma-green) !important;
+            background: transparent !important;
+            background-color: rgba(0, 0, 0, 0) !important;
             border: none !important;
             border-radius: 0 !important;
             box-shadow: none !important;
-            padding: 0 !important;
+            padding: 0 12px 14px 12px !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: flex-end !important;
@@ -68,28 +68,24 @@
             --team-grad: linear-gradient(135deg, #0284c7 0%, #1d4ed8 55%, #1e1b4b 100%);
             --panel-grad: linear-gradient(180deg, rgba(15, 23, 42, 0.97) 0%, rgba(4, 9, 22, 0.99) 100%);
             --highlight-bar: linear-gradient(90deg, #38bdf8, #fbbf24, #38bdf8);
-            --badge-color: #38bdf8;
         }
 
         .theme-ipl {
             --team-grad: linear-gradient(135deg, #d97706 0%, #b45309 50%, #451a03 100%);
             --panel-grad: linear-gradient(180deg, rgba(19, 14, 38, 0.97) 0%, rgba(9, 6, 20, 0.99) 100%);
             --highlight-bar: linear-gradient(90deg, #fbbf24, #f43f5e, #fbbf24);
-            --badge-color: #fbbf24;
         }
 
         .theme-emerald {
             --team-grad: linear-gradient(135deg, #059669 0%, #065f46 60%, #022c22 100%);
             --panel-grad: linear-gradient(180deg, rgba(10, 22, 24, 0.97) 0%, rgba(3, 11, 13, 0.99) 100%);
             --highlight-bar: linear-gradient(90deg, #34d399, #fde047, #34d399);
-            --badge-color: #34d399;
         }
 
-        /* Modern Broadcast Scorebug */
         .broadcast-bug {
             background: var(--panel-grad);
-            border: 1.5px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .team-block {
@@ -115,7 +111,6 @@
             background: var(--highlight-bar);
         }
 
-        /* Ball Dots */
         .ball-dot {
             width: 24px;
             height: 24px;
@@ -129,7 +124,6 @@
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.35), 0 2px 4px rgba(0,0,0,0.4);
         }
 
-        /* TV Graphic Animations */
         @keyframes eventPop {
             0% { transform: scale(0.6) translateY(30px); opacity: 0; }
             15% { transform: scale(1.06) translateY(0); opacity: 1; }
@@ -149,12 +143,12 @@
         .animate-summary-card {
             animation: summarySlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
+    <script>
+        if (new URLSearchParams(window.location.search).get('mode') === 'overlay') {
+            document.documentElement.classList.add('overlay-root');
+        }
+    </script>
 </head>
 <body id="appBody" class="theme-icc">
 
@@ -168,7 +162,7 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-sm sm:text-base font-extrabold tracking-wide text-white uppercase">GPL CricCast <span class="text-sky-400">Pro</span></h1>
-                        <span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">V2.5 TV</span>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">TRANSPARENT</span>
                     </div>
                     <div class="flex items-center gap-2 text-[11px]">
                         <span id="syncStatusBadge" class="inline-flex items-center gap-1.5 font-semibold text-emerald-400">
@@ -180,7 +174,6 @@
                 </div>
             </div>
 
-            <!-- Theme & Copy Controls -->
             <div class="flex flex-wrap items-center gap-1.5">
                 <select id="themeSelector" onchange="changeTheme(this.value)" class="bg-slate-900 border border-slate-700 text-xs font-bold text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-sky-500">
                     <option value="theme-icc">ICC Blue TV</option>
@@ -193,25 +186,22 @@
                 </button>
             </div>
         </div>
-
-        <!-- Copy Toast Notification -->
         <div id="copyToast" class="hidden max-w-6xl mx-auto mt-2 px-3 py-2 rounded-lg bg-emerald-950/90 border border-emerald-500/60 text-emerald-200 text-xs"></div>
     </header>
 
-    <!-- ==================== BROADCAST OVERLAY STAGE (VISIBLE IN BOTH ADMIN & PRISM LIVE) ==================== -->
-    <section id="overlayStage" class="overlay-stage relative w-full bg-[#00b140] border-b-4 border-slate-900 px-2 sm:px-6 pt-8 pb-3 sm:pb-5 flex flex-col justify-end min-h-[210px] sm:min-h-[250px] select-none">
+    <!-- ==================== BROADCAST OVERLAY STAGE ==================== -->
+    <section id="overlayStage" class="overlay-stage relative w-full bg-slate-900/90 border-b-4 border-slate-800 px-2 sm:px-6 pt-8 pb-3 sm:pb-5 flex flex-col justify-end min-h-[200px] sm:min-h-[240px] select-none">
 
-        <!-- Preview Label (Hidden in Prism Live) -->
-        <div class="admin-section absolute top-2 left-3 right-3 flex items-center justify-between text-[11px] font-bold text-slate-950/80">
-            <span class="bg-white/80 backdrop-blur px-2.5 py-0.5 rounded-full shadow-sm">
-                <i class="fa-solid fa-eye text-emerald-700 mr-1"></i> Live TV Overlay Preview (Chroma #00b140)
+        <div class="admin-section absolute top-2 left-3 right-3 flex items-center justify-between text-[11px] font-bold">
+            <span class="bg-slate-800/90 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                <i class="fa-solid fa-check-circle mr-1"></i> Auto-Transparent Overlay (Chroma Key OFF रखें)
             </span>
             <span id="quotaAlertBadge" class="hidden bg-rose-600 text-white px-2.5 py-0.5 rounded-full shadow animate-bounce">
                 <i class="fa-solid fa-triangle-exclamation mr-1"></i> बॉलर का ओवर कोटा पूरा!
             </span>
         </div>
 
-        <!-- FULL-SCREEN TV EVENT BANNER (4, 6, WICKET, MILESTONES) -->
+        <!-- FULL-SCREEN TV EVENT BANNER -->
         <div id="tvEventOverlay" class="pointer-events-none fixed inset-x-0 top-1/4 flex justify-center items-center z-50 hidden">
             <div id="tvEventCard" class="px-8 py-4 rounded-2xl border-2 border-white/40 shadow-2xl text-center transform">
                 <div id="tvEventTitle" class="font-score text-6xl sm:text-7xl font-bold tracking-wider text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)] leading-none">FOUR!</div>
@@ -219,10 +209,9 @@
             </div>
         </div>
 
-        <!-- MID-MATCH / INNINGS TV SUMMARY CARD (TOGGLED BY SCORER) -->
+        <!-- MID-MATCH / INNINGS TV SUMMARY CARD -->
         <div id="matchSummaryOverlay" class="hidden fixed inset-0 z-40 flex items-center justify-center p-3 sm:p-6 pointer-events-none">
-            <div class="animate-summary-card w-full max-w-2xl rounded-2xl overflow-hidden border-2 border-white/25 shadow-[0_25px_70px_rgba(0,0,0,0.88)] bg-slate-950/95 text-white">
-                <!-- Header -->
+            <div class="animate-summary-card w-full max-w-2xl rounded-2xl overflow-hidden border-2 border-white/25 shadow-[0_25px_70px_rgba(0,0,0,0.9)] bg-slate-950/95 text-white">
                 <div class="top-shimmer"></div>
                 <div class="px-5 py-3 bg-gradient-to-r from-sky-900 via-indigo-950 to-slate-900 flex items-center justify-between border-b border-white/15">
                     <div>
@@ -236,10 +225,8 @@
                     </span>
                 </div>
 
-                <!-- Score Comparison Box -->
                 <div class="p-4 sm:p-5 space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- First Innings / Team 1 -->
                         <div id="sumFirstInnBox" class="hidden rounded-xl bg-slate-900/90 border border-slate-700/80 p-3 flex items-center justify-between">
                             <div>
                                 <span class="text-[10px] font-bold uppercase text-slate-400 block">1ST INNINGS</span>
@@ -251,7 +238,6 @@
                             </div>
                         </div>
 
-                        <!-- Current Batting Team -->
                         <div class="rounded-xl bg-gradient-to-r from-sky-950/90 to-slate-900 border border-sky-500/40 p-3 flex items-center justify-between col-span-1 sm:col-span-2" id="sumCurrentInnBox">
                             <div>
                                 <span class="text-[10px] font-bold uppercase text-sky-400 block" id="sumCurrentLabel">BATTING NOW</span>
@@ -264,9 +250,7 @@
                         </div>
                     </div>
 
-                    <!-- Top Performers Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Top Batters -->
                         <div class="rounded-xl bg-slate-900/80 border border-white/10 p-3">
                             <div class="text-[11px] font-extrabold uppercase tracking-wider text-sky-400 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-baseball-bat-ball"></i> TOP BATTERS
@@ -274,7 +258,6 @@
                             <div id="sumBattersList" class="space-y-1.5 text-xs sm:text-sm"></div>
                         </div>
 
-                        <!-- Top Bowlers -->
                         <div class="rounded-xl bg-slate-900/80 border border-white/10 p-3">
                             <div class="text-[11px] font-extrabold uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
                                 <i class="fa-solid fa-bowling-ball"></i> BOWLING ATTACK
@@ -283,7 +266,6 @@
                         </div>
                     </div>
 
-                    <!-- Footer Equation -->
                     <div id="sumEquationFooter" class="rounded-lg bg-amber-500/15 border border-amber-400/30 px-3.5 py-2 text-center text-xs sm:text-sm font-extrabold text-amber-200 tracking-wide">
                         GPL CRICCAST PRO • LIVE BROADCAST
                     </div>
@@ -296,10 +278,8 @@
             <div class="broadcast-bug rounded-2xl overflow-hidden">
                 <div class="top-shimmer"></div>
 
-                <!-- Main Horizontal Broadcast Strip -->
                 <div class="flex flex-col md:flex-row items-stretch">
-
-                    <!-- 1. TEAM & SCORE BLOCK (HIGH VISIBILITY) -->
+                    <!-- 1. TEAM & SCORE -->
                     <div class="team-block px-4 sm:px-6 py-2.5 md:w-[32%] flex items-center justify-between text-white">
                         <div class="relative z-10 min-w-0 pr-2">
                             <div class="flex items-center gap-1.5">
@@ -321,9 +301,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. BATTERS BLOCK -->
-                    <div class="md:w-[34%] px-4 sm:px-6 py-2 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 bg-slate-950/40">
-                        <!-- Striker -->
+                    <!-- 2. BATTERS -->
+                    <div class="md:w-[34%] px-4 sm:px-6 py-2 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 bg-slate-950/60">
                         <div class="flex items-center justify-between py-0.5">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span id="ovStrikerArrow" class="text-amber-400 text-xs font-black">▶</span>
@@ -335,7 +314,6 @@
                             </div>
                         </div>
 
-                        <!-- Non-Striker -->
                         <div class="flex items-center justify-between py-0.5 border-t border-white/5">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span id="ovNonStrikerArrow" class="text-amber-400 text-xs font-black opacity-0">▶</span>
@@ -348,8 +326,8 @@
                         </div>
                     </div>
 
-                    <!-- 3. BOWLER, THIS OVER & RUN RATES BLOCK -->
-                    <div class="md:w-[34%] px-4 py-2 flex items-center justify-between gap-2 border-t md:border-t-0 md:border-l border-white/10 bg-slate-900/50">
+                    <!-- 3. BOWLER & THIS OVER -->
+                    <div class="md:w-[34%] px-4 py-2 flex items-center justify-between gap-2 border-t md:border-t-0 md:border-l border-white/10 bg-slate-900/75">
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center justify-between mb-1">
                                 <span id="ovBowlerName" class="text-xs sm:text-sm font-extrabold text-sky-300 truncate uppercase">
@@ -359,13 +337,11 @@
                                     0-0 <span class="text-xs font-sans text-slate-400">(0.0)</span>
                                 </span>
                             </div>
-                            <!-- Current Over Ball Pills -->
                             <div id="ovThisOverBalls" class="flex items-center gap-1.5 overflow-x-auto py-0.5 min-h-[26px]">
-                                <span class="text-[11px] text-slate-500 font-semibold italic">Waiting for ball...</span>
+                                <span class="text-[11px] text-slate-400 font-semibold italic">New Over Ready</span>
                             </div>
                         </div>
 
-                        <!-- CRR / RRR Pill -->
                         <div class="shrink-0 pl-2.5 border-l border-white/15 text-right flex flex-col justify-center">
                             <div class="text-[10px] font-extrabold text-slate-400 uppercase">CRR</div>
                             <div id="ovCrr" class="font-score text-2xl font-bold text-emerald-400 leading-none">0.00</div>
@@ -376,8 +352,8 @@
                     </div>
                 </div>
 
-                <!-- BOTTOM TICKER / CHASE EQUATION STRIP -->
-                <div class="bg-black/80 px-4 py-1.5 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs font-extrabold tracking-wide">
+                <!-- BOTTOM TICKER -->
+                <div class="bg-black/90 px-4 py-1.5 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs font-extrabold tracking-wide">
                     <div id="ovBottomLeft" class="text-slate-200 uppercase truncate">
                         <span id="ovFixtureText">TEAM A VS TEAM B</span>
                         <span class="mx-1.5 text-slate-600">•</span>
@@ -391,40 +367,32 @@
         </div>
     </section>
 
-    <!-- ==================== SCORER ADMIN CONTROL PANEL (HIDDEN IN PRISM LIVE) ==================== -->
+    <!-- ==================== SCORER ADMIN CONTROL PANEL ==================== -->
     <main class="admin-section max-w-6xl mx-auto p-3 sm:p-5 space-y-4 pb-20">
 
-        <!-- QUICK BROADCAST ACTIONS BAR (SUMMARY, INNINGS, UNDO, STRIKE) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <!-- Toggle Match Summary Graphic -->
             <button id="btnToggleSummary" onclick="toggleMatchSummary()" class="p-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 transition active:scale-95">
                 <i class="fa-solid fa-chart-pie text-base"></i>
                 <span id="btnSummaryLabel">Show Match Summary</span>
             </button>
 
-            <!-- Switch 1st / 2nd Innings -->
             <button onclick="startSecondInnings()" class="p-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-amber-600/25 flex items-center justify-center gap-2 transition active:scale-95">
                 <i class="fa-solid fa-repeat text-base"></i>
                 <span>Start 2nd Innings</span>
             </button>
 
-            <!-- Swap Strike -->
             <button onclick="swapStrike()" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sky-300 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95">
                 <i class="fa-solid fa-arrows-left-right text-base"></i>
                 <span>Swap Strike (*)</span>
             </button>
 
-            <!-- Undo Last Ball -->
             <button onclick="undoLastAction()" class="p-3 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-700/60 text-rose-200 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95">
                 <i class="fa-solid fa-rotate-left text-base"></i>
                 <span>Undo Last Ball</span>
             </button>
         </div>
 
-        <!-- MAIN SCORING CONSOLE -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-            <!-- LEFT: RUNS, EXTRAS & WICKETS BUTTONS (7 Cols) -->
             <div class="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                     <h2 class="text-sm font-extrabold uppercase tracking-wider text-sky-400 flex items-center gap-2">
@@ -435,7 +403,6 @@
                     </span>
                 </div>
 
-                <!-- Legal Deliveries (0, 1, 2, 3, 4, 6) -->
                 <div>
                     <div class="text-[11px] font-bold uppercase text-slate-400 mb-2">Runs (Valid Ball)</div>
                     <div class="grid grid-cols-6 gap-2">
@@ -448,26 +415,18 @@
                     </div>
                 </div>
 
-                <!-- Extras & Wicket -->
                 <div>
                     <div class="text-[11px] font-bold uppercase text-slate-400 mb-2">Extras & Wicket</div>
                     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                        <button onclick="scoreBall(1, 'wide')" class="h-12 rounded-xl bg-amber-950/70 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-extrabold text-xs sm:text-sm transition active:scale-95">
-                            WIDE (+1)
-                        </button>
-                        <button onclick="scoreBall(1, 'noball')" class="h-12 rounded-xl bg-amber-950/70 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-extrabold text-xs sm:text-sm transition active:scale-95">
-                            NO BALL (+1)
-                        </button>
-                        <button onclick="scoreBall(1, 'bye')" class="h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-extrabold text-xs sm:text-sm transition active:scale-95">
-                            BYE / LB (+1)
-                        </button>
+                        <button onclick="scoreBall(1, 'wide')" class="h-12 rounded-xl bg-amber-950/70 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-extrabold text-xs sm:text-sm transition active:scale-95">WIDE (+1)</button>
+                        <button onclick="scoreBall(1, 'noball')" class="h-12 rounded-xl bg-amber-950/70 hover:bg-amber-900 border border-amber-700/60 text-amber-300 font-extrabold text-xs sm:text-sm transition active:scale-95">NO BALL (+1)</button>
+                        <button onclick="scoreBall(1, 'bye')" class="h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-extrabold text-xs sm:text-sm transition active:scale-95">BYE / LB (+1)</button>
                         <button onclick="openNewBatterModal()" class="col-span-2 h-12 rounded-xl bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 text-white font-extrabold text-sm tracking-wider shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition active:scale-95">
                             <i class="fa-solid fa-bolt"></i> OUT / WICKET
                         </button>
                     </div>
                 </div>
 
-                <!-- Custom Extra Runs (e.g. Wide + 4, No Ball + 6) -->
                 <div class="pt-2 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
                     <span class="text-xs font-bold text-slate-400">Bonus Extra Runs:</span>
                     <div class="flex flex-wrap gap-1.5">
@@ -480,48 +439,34 @@
                 </div>
             </div>
 
-            <!-- RIGHT: BOWLER MANAGEMENT & MATCH RULES (5 Cols) -->
             <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                     <h2 class="text-sm font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-2">
                         <i class="fa-solid fa-bowling-ball"></i> Bowler & Over Quota
                     </h2>
-                    <span id="bowlerQuotaPill" class="px-2 py-0.5 rounded bg-slate-800 text-[11px] font-bold text-sky-300 border border-slate-700">
-                        0.0 / 2 Ov
-                    </span>
+                    <span id="bowlerQuotaPill" class="px-2 py-0.5 rounded bg-slate-800 text-[11px] font-bold text-sky-300 border border-slate-700">0.0 / 2 Ov</span>
                 </div>
 
-                <!-- Active Bowler Switcher / Input -->
                 <div class="space-y-2">
                     <label class="text-[11px] font-bold uppercase text-slate-400 block">Current Bowler (नया ओवर या बॉलर बदलें)</label>
                     <div class="flex gap-2">
                         <input type="text" id="inputBowlerName" placeholder="गेंदबाज का नाम लिखें..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-amber-500">
-                        <button onclick="setBowlerFromInput()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold transition active:scale-95">
-                            Set
-                        </button>
+                        <button onclick="setBowlerFromInput()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold transition active:scale-95">Set</button>
                     </div>
-
-                    <!-- Saved Bowlers Quick Chips -->
                     <div id="savedBowlersChips" class="flex flex-wrap gap-1.5 pt-1"></div>
                 </div>
 
-                <!-- Total Match Overs & Max Bowler Overs Settings -->
                 <div class="pt-3 border-t border-slate-800 grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-[11px] font-bold uppercase text-slate-400 block mb-1">Total Match Overs</label>
-                        <div class="flex gap-1">
-                            <input type="number" id="inputTotalOvers" min="1" max="50" value="10" onchange="updateMatchRules()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-extrabold text-white">
-                        </div>
+                        <input type="number" id="inputTotalOvers" min="1" max="50" value="10" onchange="updateMatchRules()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-extrabold text-white">
                     </div>
                     <div>
                         <label class="text-[11px] font-bold uppercase text-slate-400 block mb-1">Max Overs / Bowler</label>
-                        <div class="flex gap-1">
-                            <input type="number" id="inputMaxBowlerOvers" min="1" max="15" value="2" onchange="updateMatchRules()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-extrabold text-amber-300">
-                        </div>
+                        <input type="number" id="inputMaxBowlerOvers" min="1" max="15" value="2" onchange="updateMatchRules()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-sm font-extrabold text-amber-300">
                     </div>
                 </div>
 
-                <!-- Quick Overs Presets -->
                 <div class="flex flex-wrap gap-1.5">
                     <button onclick="applyPresetOvers(6, 2)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-slate-300">6 Ov (Max 2)</button>
                     <button onclick="applyPresetOvers(8, 2)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-slate-300">8 Ov (Max 2)</button>
@@ -532,7 +477,6 @@
             </div>
         </div>
 
-        <!-- TEAMS, BATTERS & MATCH SETUP PANEL -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
                 <h2 class="text-sm font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
@@ -562,7 +506,6 @@
                 </div>
             </div>
 
-            <!-- Edit Active Batters Names -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
                 <div class="flex items-center gap-2">
                     <span class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-extrabold">Bat 1</span>
@@ -576,7 +519,7 @@
         </div>
     </main>
 
-    <!-- ==================== WICKET / NEW BATTER MODAL ==================== -->
+    <!-- ==================== WICKET MODAL ==================== -->
     <div id="wicketModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 space-y-4 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
@@ -609,9 +552,8 @@
     <!-- ==================== FIREBASE & BROADCAST ENGINE ==================== -->
     <script type="module">
         import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue, off } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-        // Permanently Hardcoded GPL CricCast Pro Firebase Configuration
         const DEFAULT_FIREBASE_CONFIG = {
             apiKey: "AIzaSyCWtQ1huWR3DEK0ZF1B2_-VNfWlFU58eP0",
             authDomain: "gpl-criccast.firebaseapp.com",
@@ -628,27 +570,27 @@
         const currentRoomId = (urlParams.get('room') || 'GPL2026').replace(/[^a-zA-Z0-9_-]/g, '');
 
         if (currentMode === 'overlay') {
-            document.getElementById('appBody').classList.add('overlay-only');
+            document.documentElement.classList.add('overlay-root');
+            document.body.classList.add('overlay-only');
         }
         document.getElementById('headerRoomDisplay').innerText = currentRoomId;
 
-        // Default Match State
         const defaultState = {
             tournament: "GPL SPORTS LIVE • CHANDAULI",
             batTeam: "ALAMPUR",
             bowlTeam: "SEER",
             innings: 1,
             target: 0,
-            firstInningsSummary: null, // { team, runs, wickets, overs }
+            firstInningsSummary: null,
             totalOvers: 10,
             maxBowlerOvers: 2,
             runs: 0,
             wickets: 0,
             legalBalls: 0,
-            striker: 1, // 1 or 2
+            striker: 1,
             bat1: { name: "आशु", runs: 0, balls: 0, fours: 0, sixes: 0 },
             bat2: { name: "अंकुर", runs: 0, balls: 0, fours: 0, sixes: 0 },
-            battingCard: [], // Completed & active batters for summary
+            battingCard: [],
             currentBowler: "विकास",
             bowlers: {
                 "विकास": { balls: 0, runs: 0, wickets: 0 }
@@ -693,7 +635,6 @@
             }
         }
 
-        // Sync Batting Card helper for Summary
         function syncBattingCard() {
             const list = [...(matchState.battingCard || [])];
             [matchState.bat1, matchState.bat2].forEach(b => {
@@ -707,7 +648,6 @@
             matchState.battingCard = list;
         }
 
-        // ==================== SCORING FUNCTIONS ====================
         window.scoreBall = function(runsScored, type) {
             saveSnapshotForUndo();
             const bKey = matchState.striker === 1 ? 'bat1' : 'bat2';
@@ -739,12 +679,10 @@
 
                 matchState.thisOver.push({ label: runsScored === 0 ? '•' : `${runsScored}`, type: runsScored === 4 ? 'four' : (runsScored === 6 ? 'six' : 'normal') });
 
-                // Odd runs swap strike
                 if (runsScored % 2 === 1) {
                     matchState.striker = matchState.striker === 1 ? 2 : 1;
                 }
 
-                // End of over check
                 if (matchState.legalBalls % 6 === 0) {
                     matchState.striker = matchState.striker === 1 ? 2 : 1;
                     setTimeout(() => {
@@ -796,7 +734,6 @@
             pushStateToCloud(eventPayload);
         };
 
-        // Wicket Modal Handlers
         window.openNewBatterModal = function() {
             selectedOutSlot = matchState.striker;
             document.getElementById('btnOutBat1').innerText = matchState.bat1.name;
@@ -834,7 +771,6 @@
                 matchState.bowlers[bowlerName] = { balls: 0, runs: 0, wickets: 0 };
             }
 
-            // Mark out batter in battingCard
             const idx = (matchState.battingCard || []).findIndex(item => item.name === outBatter.name && !item.out);
             if (idx >= 0) {
                 matchState.battingCard[idx] = { ...outBatter, out: true };
@@ -848,7 +784,6 @@
             matchState.bowlers[bowlerName].wickets += 1;
             matchState.thisOver.push({ label: 'W', type: 'wicket' });
 
-            // Bring new batter
             matchState[outKey] = { name: nextName, runs: 0, balls: 0, fours: 0, sixes: 0 };
             matchState.striker = selectedOutSlot;
             matchState.partnershipRuns = 0;
@@ -880,7 +815,6 @@
             pushStateToCloud();
         };
 
-        // ==================== BOWLER & RULES MANAGEMENT ====================
         window.setBowlerFromInput = function() {
             const name = document.getElementById('inputBowlerName').value.trim();
             if (!name) return;
@@ -911,7 +845,6 @@
             updateMatchRules();
         };
 
-        // ==================== MATCH SUMMARY & INNINGS SWITCH ====================
         window.toggleMatchSummary = function() {
             matchState.showSummary = !matchState.showSummary;
             pushStateToCloud();
@@ -996,249 +929,8 @@
             pushStateToCloud();
         };
 
-        // ==================== UI RENDERING ====================
         function renderUI() {
-            // Lower-Third Scorebug
             document.getElementById('ovTournamentSmall').innerText = matchState.tournament;
             document.getElementById('ovBatTeam').innerText = matchState.batTeam;
             document.getElementById('ovRunsWickets').innerText = `${matchState.runs}/${matchState.wickets}`;
-            document.getElementById('ovOvers').innerText = formatOvers(matchState.legalBalls);
-            document.getElementById('ovTotalOvers').innerText = matchState.totalOvers;
-
-            // Batters
-            document.getElementById('ovBat1Name').innerText = matchState.bat1.name;
-            document.getElementById('ovBat1Runs').innerText = matchState.bat1.runs;
-            document.getElementById('ovBat1Balls').innerText = matchState.bat1.balls;
-
-            document.getElementById('ovBat2Name').innerText = matchState.bat2.name;
-            document.getElementById('ovBat2Runs').innerText = matchState.bat2.runs;
-            document.getElementById('ovBat2Balls').innerText = matchState.bat2.balls;
-
-            document.getElementById('ovStrikerArrow').style.opacity = matchState.striker === 1 ? '1' : '0';
-            document.getElementById('ovNonStrikerArrow').style.opacity = matchState.striker === 2 ? '1' : '0';
-
-            // Bowler
-            const bName = matchState.currentBowler || "गेंदबाज";
-            const bStats = (matchState.bowlers && matchState.bowlers[bName]) || { balls: 0, runs: 0, wickets: 0 };
-            document.getElementById('ovBowlerName').innerHTML = `<i class="fa-solid fa-baseball text-[10px] mr-1 text-amber-400"></i>${bName}`;
-            document.getElementById('ovBowlerFigs').innerHTML = `${bStats.wickets}-${bStats.runs} <span class="text-xs font-sans text-slate-400">(${formatOvers(bStats.balls)})</span>`;
-
-            // Quota Check
-            const maxBallsAllowed = (matchState.maxBowlerOvers || 2) * 6;
-            const quotaAlert = document.getElementById('quotaAlertBadge');
-            if (bStats.balls >= maxBallsAllowed) {
-                quotaAlert.classList.remove('hidden');
-            } else {
-                quotaAlert.classList.add('hidden');
-            }
-
-            // This Over Balls
-            const overContainer = document.getElementById('ovThisOverBalls');
-            if (!matchState.thisOver || matchState.thisOver.length === 0) {
-                overContainer.innerHTML = `<span class="text-[11px] text-slate-400 font-semibold italic">New Over Ready</span>`;
-            } else {
-                overContainer.innerHTML = matchState.thisOver.map(b => {
-                    let cls = "bg-slate-800 text-white border border-slate-600";
-                    if (b.type === 'four') cls = "bg-sky-500 text-white border border-sky-300";
-                    if (b.type === 'six') cls = "bg-amber-500 text-slate-950 border border-amber-200 font-black";
-                    if (b.type === 'wicket') cls = "bg-rose-600 text-white border border-rose-300";
-                    if (b.type === 'extra') cls = "bg-purple-700 text-amber-200 border border-purple-400 text-[9px]";
-                    return `<span class="ball-dot ${cls}">${b.label}</span>`;
-                }).join('');
-            }
-
-            // CRR & RRR / Chase Equation
-            const crr = matchState.legalBalls > 0 ? ((matchState.runs / matchState.legalBalls) * 6).toFixed(2) : "0.00";
-            document.getElementById('ovCrr').innerText = crr;
-
-            document.getElementById('ovFixtureText').innerText = `${matchState.batTeam} VS ${matchState.bowlTeam}`;
-            document.getElementById('ovPartnershipText').innerText = `P'SHIP: ${matchState.partnershipRuns} (${matchState.partnershipBalls})`;
-
-            const totalMatchBalls = (matchState.totalOvers || 10) * 6;
-            const remBalls = Math.max(0, totalMatchBalls - matchState.legalBalls);
-
-            if (matchState.innings === 2 && matchState.target > 0) {
-                const needRuns = Math.max(0, matchState.target - matchState.runs);
-                const rrr = remBalls > 0 ? ((needRuns / remBalls) * 6).toFixed(2) : "0.00";
-                document.getElementById('ovRrrBox').classList.remove('hidden');
-                document.getElementById('ovRrr').innerText = rrr;
-                document.getElementById('ovBottomRight').innerHTML = `<span class="text-emerald-300">TARGET ${matchState.target}</span> • NEED <span class="text-white">${needRuns}</span> IN <span class="text-white">${remBalls}</span> BALLS`;
-            } else {
-                document.getElementById('ovRrrBox').classList.add('hidden');
-                document.getElementById('ovBottomRight').innerHTML = `1ST INNINGS • MAX <span class="text-white">${matchState.maxBowlerOvers}</span> OV/BOWLER`;
-            }
-
-            // Match Summary Overlay Card
-            const sumOverlay = document.getElementById('matchSummaryOverlay');
-            const btnSum = document.getElementById('btnToggleSummary');
-            const btnSumLbl = document.getElementById('btnSummaryLabel');
-            if (matchState.showSummary) {
-                sumOverlay.classList.remove('hidden');
-                if (btnSum) btnSum.className = "p-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 transition active:scale-95";
-                if (btnSumLbl) btnSumLbl.innerText = "Hide Match Summary";
-                renderSummaryCardData(remBalls);
-            } else {
-                sumOverlay.classList.add('hidden');
-                if (btnSum) btnSum.className = "p-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 transition active:scale-95";
-                if (btnSumLbl) btnSumLbl.innerText = "Show Match Summary";
-            }
-
-            // Admin Inputs Sync
-            if (currentMode !== 'overlay') {
-                document.getElementById('adminStrikerLabel').innerText = matchState.striker === 1 ? matchState.bat1.name : matchState.bat2.name;
-                document.getElementById('bowlerQuotaPill').innerText = `${formatOvers(bStats.balls)} / ${matchState.maxBowlerOvers} Ov`;
-                document.getElementById('inputTournament').value = matchState.tournament;
-                document.getElementById('inputBatTeam').value = matchState.batTeam;
-                document.getElementById('inputBowlTeam').value = matchState.bowlTeam;
-                document.getElementById('inputTarget').value = matchState.target || '';
-                document.getElementById('inputBat1Name').value = matchState.bat1.name;
-                document.getElementById('inputBat2Name').value = matchState.bat2.name;
-                document.getElementById('inputTotalOvers').value = matchState.totalOvers;
-                document.getElementById('inputMaxBowlerOvers').value = matchState.maxBowlerOvers;
-
-                // Saved Bowler Chips
-                const chipsDiv = document.getElementById('savedBowlersChips');
-                const bowlersObj = matchState.bowlers || {};
-                chipsDiv.innerHTML = Object.keys(bowlersObj).map(name => {
-                    const st = bowlersObj[name];
-                    const isAct = name === matchState.currentBowler;
-                    const isFull = st.balls >= maxBallsAllowed;
-                    return `<button onclick="switchBowler('${name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg text-xs font-bold border transition ${isAct ? 'bg-amber-500 text-slate-950 border-amber-300' : (isFull ? 'bg-rose-950/60 text-rose-300 border-rose-700' : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700')}">
-                        ${name} (${formatOvers(st.balls)}-${st.runs}-${st.wickets})
-                    </button>`;
-                }).join('');
-            }
-        }
-
-        function renderSummaryCardData(remBalls) {
-            document.getElementById('sumTournament').innerText = matchState.tournament;
-            document.getElementById('sumStatusTag').innerText = matchState.innings === 2 ? `2ND INNINGS • TARGET ${matchState.target}` : `1ST INNINGS • ${matchState.totalOvers} OVERS MATCH`;
-
-            const firstBox = document.getElementById('sumFirstInnBox');
-            const currBox = document.getElementById('sumCurrentInnBox');
-            if (matchState.firstInningsSummary) {
-                firstBox.classList.remove('hidden');
-                currBox.classList.remove('sm:col-span-2');
-                document.getElementById('sumTeam1Name').innerText = matchState.firstInningsSummary.team;
-                document.getElementById('sumTeam1Score').innerText = `${matchState.firstInningsSummary.runs}/${matchState.firstInningsSummary.wickets}`;
-                document.getElementById('sumTeam1Overs').innerText = `OVERS ${matchState.firstInningsSummary.overs}`;
-            } else {
-                firstBox.classList.add('hidden');
-                currBox.classList.add('sm:col-span-2');
-            }
-
-            document.getElementById('sumTeam2Name').innerText = matchState.batTeam;
-            document.getElementById('sumTeam2Score').innerText = `${matchState.runs}/${matchState.wickets}`;
-            document.getElementById('sumTeam2Overs').innerText = `OVERS ${formatOvers(matchState.legalBalls)} / ${matchState.totalOvers}`;
-
-            // Top Batters
-            syncBattingCard();
-            const sortedBatters = [...(matchState.battingCard || [])]
-                .sort((a, b) => b.runs - a.runs)
-                .slice(0, 3);
-            document.getElementById('sumBattersList').innerHTML = sortedBatters.map(b => `
-                <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                    <span class="font-bold text-slate-200 truncate">${b.name}${!b.out ? '*' : ''}</span>
-                    <span class="font-score text-lg font-bold text-amber-300">${b.runs} <span class="text-[11px] font-sans text-slate-400">(${b.balls})</span></span>
-                </div>
-            `).join('') || '<div class="text-slate-500 text-xs">No batting data yet</div>';
-
-            // Top Bowlers
-            const bowlersArr = Object.entries(matchState.bowlers || {})
-                .map(([name, st]) => ({ name, ...st }))
-                .sort((a, b) => b.wickets - a.wickets || a.runs - b.runs)
-                .slice(0, 3);
-            document.getElementById('sumBowlersList').innerHTML = bowlersArr.map(bw => `
-                <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                    <span class="font-bold text-slate-200 truncate">${bw.name}</span>
-                    <span class="font-score text-lg font-bold text-sky-300">${bw.wickets}-${bw.runs} <span class="text-[11px] font-sans text-slate-400">(${formatOvers(bw.balls)})</span></span>
-                </div>
-            `).join('') || '<div class="text-slate-500 text-xs">No bowling data yet</div>';
-
-            // Equation Footer
-            if (matchState.innings === 2 && matchState.target > 0) {
-                const need = Math.max(0, matchState.target - matchState.runs);
-                document.getElementById('sumEquationFooter').innerText = `${matchState.batTeam} NEED ${need} RUNS IN ${remBalls} BALLS TO WIN`;
-            } else {
-                const crr = matchState.legalBalls > 0 ? ((matchState.runs / matchState.legalBalls) * 6).toFixed(2) : "0.00";
-                document.getElementById('sumEquationFooter').innerText = `CURRENT RUN RATE: ${crr} • PROJECTED SCORE: ${Math.round(parseFloat(crr) * matchState.totalOvers)}`;
-            }
-        }
-
-        function playBroadcastAnimationLocal(title, sub, gradient) {
-            const overlay = document.getElementById('tvEventOverlay');
-            const card = document.getElementById('tvEventCard');
-            document.getElementById('tvEventTitle').innerText = title;
-            document.getElementById('tvEventSub').innerText = sub;
-            card.className = `px-8 py-4 rounded-2xl border-2 border-white/40 shadow-2xl text-center bg-gradient-to-r ${gradient || 'from-sky-600 to-indigo-800'} animate-tv-event`;
-            overlay.classList.remove('hidden');
-            setTimeout(() => overlay.classList.add('hidden'), 3300);
-        }
-
-        // Copy Direct Overlay Link
-        window.copyShareLink = function(targetMode) {
-            const url = new URL(window.location.href.split('#')[0].split('?')[0]);
-            url.searchParams.set('mode', targetMode);
-            url.searchParams.set('room', currentRoomId);
-            const finalLink = url.toString();
-
-            const temp = document.createElement('textarea');
-            temp.value = finalLink;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-
-            const toast = document.getElementById('copyToast');
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> <strong>Prism Live URL कॉपी हो गया!</strong> इसे Prism Live Studio के Web सोर्स में पेस्ट करें।`;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 4500);
-        };
-
-        // ==================== FIREBASE REALTIME INIT ====================
-        async function initFirebaseSync() {
-            const badge = document.getElementById('syncStatusBadge');
-            try {
-                const existing = getApps();
-                if (existing.length > 0) await deleteApp(existing[0]);
-
-                const app = initializeApp(DEFAULT_FIREBASE_CONFIG);
-                const db = getDatabase(app);
-                activeDbRef = ref(db, `gpl_criccast_rooms/${currentRoomId}`);
-
-                onValue(activeDbRef, (snapshot) => {
-                    if (badge) {
-                        badge.className = "inline-flex items-center gap-1.5 font-semibold text-emerald-400";
-                        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> GPL Cloud Live`;
-                    }
-                    const cloudData = snapshot.val();
-                    if (cloudData) {
-                        const prevEventId = matchState.lastEvent ? matchState.lastEvent.id : 0;
-                        matchState = { ...defaultState, ...cloudData };
-                        localStorage.setItem('gplCricCastV2_' + currentRoomId, JSON.stringify(matchState));
-                        applyThemeLocally(matchState.activeTheme);
-                        renderUI();
-
-                        if (matchState.lastEvent && matchState.lastEvent.id && matchState.lastEvent.id !== prevEventId && matchState.lastEvent.id !== lastPlayedEventId) {
-                            lastPlayedEventId = matchState.lastEvent.id;
-                            playBroadcastAnimationLocal(matchState.lastEvent.title, matchState.lastEvent.sub, matchState.lastEvent.gradient);
-                        }
-                    } else {
-                        pushStateToCloud();
-                    }
-                }, () => {
-                    if (badge) {
-                        badge.className = "inline-flex items-center gap-1.5 font-semibold text-amber-400";
-                        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Offline Backup`;
-                    }
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        renderUI();
-        initFirebaseSync();
-    </script>
-</body>
-</html>
+            document.getElementById('ovOvers').innerText = formatOvers(matchState
