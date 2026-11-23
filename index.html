@@ -347,4 +347,328 @@
             <!-- Row 3: B, OUT, UNDO, SWAP, END INN -->
             <div class="grid grid-cols-5 gap-2">
                 <button onclick="openExtraRunsModal('bye')" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-broadcast text-base sm:text-lg font-black">B</button>
-                <button onclick="openWicketModal()" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-broadcast text-base sm:text-lg font-black">
+                <button onclick="openWicketModal()" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-broadcast text-base sm:text-lg font-black">OUT</button>
+                <button onclick="undoLastAction()" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-slate-600 hover:bg-slate-500 text-white font-broadcast text-sm sm:text-base font-black">UNDO</button>
+                <button onclick="swapStrike()" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-broadcast text-sm sm:text-base font-black">SWAP</button>
+                <button onclick="startSecondInnings()" class="ctrl-btn h-12 sm:h-14 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-broadcast text-xs sm:text-sm font-black">END INN</button>
+            </div>
+
+            <!-- Row 4: PP: OFF/ON, Change Bowl, Retire Bat -->
+            <div class="grid grid-cols-12 gap-2">
+                <button id="btnPowerplay" onclick="togglePowerplay()" class="ctrl-btn col-span-3 h-11 rounded-xl bg-slate-600 text-white font-extrabold text-xs sm:text-sm">PP: OFF</button>
+                <button onclick="openChangeBowlerModal(false)" class="ctrl-btn col-span-5 h-11 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-bowling-ball"></i> Change Bowl
+                </button>
+                <button onclick="openRetireBatterModal()" class="ctrl-btn col-span-4 h-11 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-extrabold text-xs sm:text-sm">Retire Bat</button>
+            </div>
+        </div>
+
+        <!-- 2. QUICK TEAM & PLAYER ADDITION -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[11px] font-black uppercase text-slate-600 block mb-1">BATTING TEAM & OPENERS</label>
+                    <div class="flex gap-1.5 mb-2">
+                        <input type="text" id="inputBatTeam" oninput="updateSetupFields()" placeholder="Batting Team..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-extrabold uppercase text-slate-900">
+                        <input type="text" id="inputBowlTeam" oninput="updateSetupFields()" placeholder="Bowling Team..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-extrabold uppercase text-slate-900">
+                    </div>
+                    <div class="flex gap-1.5">
+                        <input type="text" id="inputBat1Name" oninput="updateBattersNames()" placeholder="Striker Name..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                        <button onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold"><i class="fa-solid fa-user-check"></i></button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-black uppercase text-slate-600 block mb-1">NON-STRIKER & CURRENT BOWLER</label>
+                    <div class="flex gap-1.5 mb-2">
+                        <input type="text" id="inputBat2Name" oninput="updateBattersNames()" placeholder="Non-Striker Name..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                        <button onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold"><i class="fa-solid fa-user-check"></i></button>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <input type="text" id="inputBowlerDirect" placeholder="New Bowler Name..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                        <button onclick="setBowlerDirect()" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-extrabold">+ Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 pt-1">
+                <button onclick="setOverlayScreen('batting')" class="ctrl-btn py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-list-ol"></i> View Batting Card
+                </button>
+                <button onclick="setOverlayScreen('bowling')" class="ctrl-btn py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-baseball"></i> View Bowling Card
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. BROADCAST CONTROLLER (DARK PANEL) -->
+        <div class="bg-slate-950 text-white border border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-lg space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-tv text-amber-400"></i>
+                    <span class="text-xs sm:text-sm font-black uppercase tracking-wider">Broadcast Controller</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                    <button id="btnInn1Pill" onclick="switchInningsBadge(1)" class="px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-extrabold">1st Inn.</button>
+                    <button id="btnInn2Pill" onclick="startSecondInnings()" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white text-xs font-extrabold">2nd Inn.</button>
+                </div>
+            </div>
+
+            <!-- Custom Overlay Text -->
+            <div>
+                <label class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1">Custom Overlay Text / Sponsor Ticker</label>
+                <div class="flex gap-2">
+                    <input type="text" id="inputCustomTicker" placeholder="Type message for overlay..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-sky-500">
+                    <button onclick="sendCustomTicker()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold flex items-center gap-1.5 active:scale-95">
+                        <i class="fa-solid fa-paper-plane"></i> Send
+                    </button>
+                    <button onclick="clearCustomTicker()" class="px-2.5 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+                </div>
+            </div>
+
+            <!-- Colorful Graphic Trigger Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                <button onclick="setOverlayScreen('default')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold">Default</button>
+                <button onclick="setOverlayScreen('batting')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold">Batting Card</button>
+                <button onclick="setOverlayScreen('bowling')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold">Bowling Card</button>
+                <button onclick="setOverlayScreen('summary')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold">Match Summary</button>
+
+                <button onclick="setOverlayScreen('mvp')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-extrabold">MVP / POTM</button>
+                <button onclick="setOverlayScreen('target')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold">Need / Target</button>
+                <button onclick="setOverlayScreen('projected')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-lime-600 hover:bg-lime-500 text-white text-xs font-extrabold">Projected</button>
+                <button onclick="setOverlayScreen('partnership')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-extrabold">Partnership</button>
+
+                <button onclick="setOverlayScreen('lastout')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-extrabold">Last Out</button>
+                <button onclick="setOverlayScreen('sinfo')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-extrabold">Striker Info</button>
+                <button onclick="setOverlayScreen('binfo')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-amber-700 hover:bg-amber-600 text-white text-xs font-extrabold">Bowler Info</button>
+                <button onclick="setOverlayScreen('tvoff')" class="ctrl-btn py-2.5 px-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold">TV Off (Hide)</button>
+            </div>
+        </div>
+
+        <!-- 4. MATCH RULES, OVERS & RESET -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-rose-600 flex items-center gap-1.5">
+                    <i class="fa-solid fa-sliders"></i> Match Rules & Overs Setup
+                </h2>
+                <button onclick="resetFullMatch()" class="px-3 py-1 rounded-lg bg-rose-600 text-white text-xs font-extrabold">Reset New Match</button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Tournament Title</label>
+                    <input type="text" id="inputTournament" oninput="updateSetupFields()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-bold">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Total Match Overs</label>
+                    <input type="number" id="inputTotalOvers" min="1" max="50" value="10" oninput="updateMatchRules()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-extrabold">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Max Overs / Bowler</label>
+                    <input type="number" id="inputMaxBowlerOvers" min="1" max="15" value="2" oninput="updateMatchRules()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-extrabold">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Target Score (2nd Inn)</label>
+                    <input type="number" id="inputTarget" placeholder="0" oninput="updateSetupFields()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-extrabold text-emerald-700">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== MODAL 1: AUTO OVER COMPLETE / CHANGE BOWLER ==================== -->
+    <div id="bowlerModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/70 text-white rounded-2xl max-w-md w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div>
+                    <span id="bowlerModalBadge" class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-500 text-slate-950">OVER COMPLETE!</span>
+                    <h3 class="text-base font-extrabold text-white mt-1">नया बॉलर चुनें (Select Next Bowler)</h3>
+                </div>
+                <button onclick="closeBowlerModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+            </div>
+
+            <div>
+                <label class="text-xs font-bold text-slate-400 block mb-1.5">पिछले गेंदबाज (एक टच में चुनें):</label>
+                <div id="modalBowlerChips" class="flex flex-wrap gap-1.5"></div>
+            </div>
+
+            <div>
+                <label class="text-xs font-bold text-slate-400 block mb-1">या नए गेंदबाज का नाम लिखें:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="modalNewBowlerInput" placeholder="गेंदबाज का नाम..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400">
+                    <button onclick="confirmNewBowlerFromModal()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black">Set Bowler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: DETAILED WICKET / DISMISSAL + NEW BATTER ==================== -->
+    <div id="wicketModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-rose-500/70 text-white rounded-2xl max-w-md w-full p-5 space-y-3.5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="text-base font-black text-rose-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> WICKET! आउट का विवरण भरें
+                </h3>
+                <button onclick="closeWicketModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+            </div>
+
+            <div>
+                <label class="text-xs font-bold text-slate-400 block mb-1">1. कौन आउट हुआ (Who is Out)?</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="btnOutBat1" onclick="selectOutBatter(1)" class="p-2.5 rounded-xl border-2 border-rose-500 bg-rose-500/20 text-white text-xs font-extrabold truncate">Batter 1</button>
+                    <button type="button" id="btnOutBat2" onclick="selectOutBatter(2)" class="p-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold truncate">Batter 2</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-xs font-bold text-slate-400 block mb-1">2. किस प्रकार आउट हुआ (Dismissal Type)?</label>
+                <div class="grid grid-cols-3 gap-1.5" id="dismissalTypeGrid">
+                    <button type="button" onclick="selectDismissalType('Caught')" class="dis-btn py-2 rounded-lg border-2 border-amber-400 bg-amber-500/20 text-amber-200 text-xs font-extrabold">Caught (कैच)</button>
+                    <button type="button" onclick="selectDismissalType('Bowled')" class="dis-btn py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold">Bowled (बोल्ड)</button>
+                    <button type="button" onclick="selectDismissalType('Run Out')" class="dis-btn py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold">Run Out (रन आउट)</button>
+                    <button type="button" onclick="selectDismissalType('LBW')" class="dis-btn py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold">LBW</button>
+                    <button type="button" onclick="selectDismissalType('Stumped')" class="dis-btn py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold">Stumped (स्टंप)</button>
+                    <button type="button" onclick="selectDismissalType('Hit Wicket')" class="dis-btn py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 text-xs font-extrabold">Hit Wicket</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-xs font-bold text-slate-400 block mb-1">3. नए बल्लेबाज का नाम (New Batter Name):</label>
+                <input type="text" id="inputNextBatter" placeholder="नए आने वाले बल्लेबाज का नाम लिखें..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm font-bold text-white focus:outline-none focus:border-sky-500">
+            </div>
+
+            <div class="flex justify-end gap-2 pt-1">
+                <button onclick="closeWicketModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancel</button>
+                <button onclick="confirmWicket()" class="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black shadow-lg">Confirm Wicket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 3: ONE-TOUCH EXTRAS (WD, NB, LB, B) ==================== -->
+    <div id="extraRunsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/70 text-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 id="extraModalTitle" class="text-base font-black text-amber-400 uppercase">WIDE BALL RUNS</h3>
+                <button onclick="closeExtraModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+            </div>
+            <p id="extraModalSub" class="text-xs text-slate-300">इस गेंद पर दौड़कर या बाउंड्री से कितने अतिरिक्त रन बने? सीधे टच करें:</p>
+            <div class="grid grid-cols-3 gap-2.5">
+                <button onclick="submitExtraBall(0)" class="py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 font-score text-2xl font-bold text-white">+0 (केवल Extra)</button>
+                <button onclick="submitExtraBall(1)" class="py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 font-score text-2xl font-bold text-amber-300">+1 रन</button>
+                <button onclick="submitExtraBall(2)" class="py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 font-score text-2xl font-bold text-amber-300">+2 रन</button>
+                <button onclick="submitExtraBall(3)" class="py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 font-score text-2xl font-bold text-amber-300">+3 रन</button>
+                <button onclick="submitExtraBall(4)" class="py-3 rounded-xl bg-sky-600 hover:bg-sky-500 font-score text-2xl font-bold text-white">+4 (चौका)</button>
+                <button onclick="submitExtraBall(6)" class="py-3 rounded-xl bg-orange-600 hover:bg-orange-500 font-score text-2xl font-bold text-white">+6 (छक्का)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 4: CUSTOM RUNS (+/-) & RETIRE BATTER ==================== -->
+    <div id="customRunsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-purple-500 text-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="text-base font-black text-purple-400">BONUS / PENALTY RUNS (+/-)</h3>
+                <button onclick="document.getElementById('customRunsModal').classList.add('hidden')" class="text-slate-400 text-lg">✕</button>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="scoreBall(5, 'legal'); document.getElementById('customRunsModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-800 font-score text-2xl font-bold text-emerald-400">+5 Runs</button>
+                <button onclick="scoreBall(7, 'legal'); document.getElementById('customRunsModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-800 font-score text-2xl font-bold text-emerald-400">+7 Runs</button>
+                <button onclick="adjustPenaltyRuns(-1)" class="py-3 rounded-xl bg-rose-900/80 font-score text-2xl font-bold text-rose-300">-1 Run</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="retireModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-pink-500 text-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="text-base font-black text-pink-400">RETIRED HURT (बिना विकेट बदले)</h3>
+                <button onclick="document.getElementById('retireModal').classList.add('hidden')" class="text-slate-400 text-lg">✕</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="btnRetire1" onclick="confirmRetireBatter(1)" class="p-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-xs font-extrabold">Batter 1</button>
+                <button id="btnRetire2" onclick="confirmRetireBatter(2)" class="p-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-xs font-extrabold">Batter 2</button>
+            </div>
+            <input type="text" id="inputRetireNewBatter" placeholder="नया बल्लेबाज लिखें..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white">
+        </div>
+    </div>
+
+    <!-- ==================== FIREBASE & BROADCAST ENGINE ==================== -->
+    <script type="module">
+        import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        const DEFAULT_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCWtQ1huWR3DEK0ZF1B2_-VNfWlFU58eP0",
+            authDomain: "gpl-criccast.firebaseapp.com",
+            databaseURL: "https://gpl-criccast-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "gpl-criccast",
+            storageBucket: "gpl-criccast.firebasestorage.app",
+            messagingSenderId: "553930628703",
+            appId: "1:553930628703:web:01566d31a9b466e33a05ea",
+            measurementId: "G-HTZJHY5EFP"
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentMode = urlParams.get('mode') || 'admin';
+        const currentRoomId = (urlParams.get('room') || 'GPL2026').replace(/[^a-zA-Z0-9_-]/g, '');
+
+        if (currentMode === 'overlay') {
+            document.documentElement.style.background = 'transparent';
+            document.getElementById('appBody').classList.add('overlay-only');
+        }
+        document.getElementById('headerRoomDisplay').innerText = currentRoomId;
+
+        const defaultState = {
+            tournament: "GPL SPORTS LIVE • CHANDAULI",
+            batTeam: "ALAMPUR",
+            bowlTeam: "SEER",
+            innings: 1,
+            target: 0,
+            firstInningsSummary: null,
+            totalOvers: 10,
+            maxBowlerOvers: 2,
+            runs: 0,
+            wickets: 0,
+            legalBalls: 0,
+            striker: 1,
+            freeHit: false,
+            powerplay: false,
+            bat1: { name: "आशु", runs: 0, balls: 0, fours: 0, sixes: 0 },
+            bat2: { name: "अंकुर", runs: 0, balls: 0, fours: 0, sixes: 0 },
+            battingCard: [],
+            lastOutInfo: null,
+            currentBowler: "विकास",
+            bowlers: { "विकास": { balls: 0, runs: 0, wickets: 0 } },
+            thisOver: [],
+            partnershipRuns: 0,
+            partnershipBalls: 0,
+            overlayScreen: "default",
+            customTicker: "",
+            lastEvent: null
+        };
+
+        let matchState = JSON.parse(localStorage.getItem('gplCricCastV3_' + currentRoomId)) || JSON.parse(JSON.stringify(defaultState));
+        let historyStack = [];
+        let activeDbRef = null;
+        let lastPlayedEventId = 0;
+        let selectedOutSlot = 1;
+        let selectedDismissal = "Caught";
+        let activeExtraType = "wide";
+        let soundEnabled = true;
+        let syncDebounceTimer = null;
+
+        function playBroadcastTone(type) {
+            if (!soundEnabled || currentMode === 'overlay') return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                if (type === 'six' || type === 'milestone') {
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.12);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.24);
+                } else if (type === 'wicket') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(320, ctx.currentTime);
+                    osc.frequency.setValueAtTime(180, ctx
