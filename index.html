@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GPL CricCast Pro V4.1 • Broadcast Studio</title>
+<title>GPL CricCast Pro V4.2 • Broadcast Studio</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Noto+Sans+Devanagari:wght@600;700;800;900&family=Teko:wght@600;700&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 .icc-fow-bar{background:linear-gradient(90deg,#1d4ed8 0%,#2563eb 50%,#1e40af 100%)}
 @keyframes eventPop{0%{transform:scale(.55) translateY(30px);opacity:0}15%{transform:scale(1.06) translateY(0);opacity:1}85%{transform:scale(1) translateY(0);opacity:1}100%{transform:scale(.85) translateY(-20px);opacity:0}}
 .animate-tv-event{animation:eventPop 3.4s cubic-bezier(.22,1,.36,1) forwards}
-.ctrl-btn{transition:transform .08s ease;box-shadow:0 3px 0 rgba(15,23,42,.18)}
+.ctrl-btn{transition:transform .08s ease;box-shadow:0 3px 0 rgba(15,23,42,.18);cursor:pointer}
 .ctrl-btn:active{transform:translateY(2px) scale(.97)}
 </style>
 </head>
@@ -37,17 +37,17 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 <div class="flex items-center gap-2">
 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-600 flex items-center justify-center"><i class="fa-solid fa-tower-broadcast text-white text-sm"></i></div>
 <div>
-<div class="flex items-center gap-1.5"><h1 class="text-sm font-black uppercase">GPL CricCast <span class="text-sky-400">Pro</span></h1><span class="px-1.5 py-0.5 text-[10px] font-extrabold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">V4.1 CLEAN</span></div>
-<div class="flex items-center gap-2 text-[10px]"><span id="syncStatusBadge" class="inline-flex items-center gap-1 font-bold text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Cloud Live</span><span class="text-slate-500">|</span><span class="text-slate-300">Room: <strong id="headerRoomDisplay" class="font-mono text-amber-300">GPL2026</strong></span></div>
+<div class="flex items-center gap-1.5"><h1 class="text-sm font-black uppercase">GPL CricCast <span class="text-sky-400">Pro</span></h1><span class="px-1.5 py-0.5 text-[10px] font-extrabold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">V4.2 FIXED</span></div>
+<div class="flex items-center gap-2 text-[10px]"><span id="syncStatusBadge" class="inline-flex items-center gap-1 font-bold text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Ready</span><span class="text-slate-500">|</span><span class="text-slate-300">Room: <strong id="headerRoomDisplay" class="font-mono text-amber-300">GPL2026</strong></span></div>
 </div>
 </div>
 <div class="flex items-center gap-1.5">
-<button onclick="toggleSound()" id="btnSoundToggle" class="px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-amber-300"><i class="fa-solid fa-volume-high"></i></button>
-<button onclick="copyShareLink('overlay')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-extrabold shadow flex items-center gap-1.5"><i class="fa-solid fa-tv"></i><span>Overlay URL</span></button>
+<button type="button" onclick="toggleSound()" id="btnSoundToggle" class="px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-amber-300"><i class="fa-solid fa-volume-high"></i></button>
+<button type="button" onclick="copyShareLink('overlay')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-extrabold shadow flex items-center gap-1.5"><i class="fa-solid fa-tv"></i><span>Overlay URL</span></button>
 </div>
 </div>
 <div id="copyToast" class="hidden max-w-5xl mx-auto mt-2 p-2 rounded-lg bg-emerald-950 border border-emerald-500 text-emerald-200 text-xs space-y-1">
-<div class="font-bold flex justify-between"><span>Prism Live Transparent Link (100% Clear):</span><button onclick="document.getElementById('copyToast').classList.add('hidden')" class="px-1">✕</button></div>
+<div class="font-bold flex justify-between"><span>Prism Live Transparent Link (100% Clear):</span><button type="button" onclick="document.getElementById('copyToast').classList.add('hidden')" class="px-1">✕</button></div>
 <input type="text" id="directOverlayUrlBox" readonly onclick="this.select()" class="w-full bg-slate-950 border border-emerald-600 rounded px-2 py-1 text-[11px] font-mono text-white select-all">
 </div>
 </header>
@@ -69,12 +69,12 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 <div class="icc-card-bg w-full max-w-3xl mx-auto rounded-xl overflow-hidden text-white pointer-events-auto">
 <div class="flex justify-between items-center bg-slate-950/90 px-3 py-1 border-b border-white/15">
 <span id="cardTourneyPill" class="text-[10px] font-black uppercase tracking-widest text-amber-300">GPL SPORTS LIVE • CHANDAULI</span>
-<button id="cardCloseAdminBtn" onclick="setOverlayScreen('default')" class="px-2.5 py-0.5 rounded bg-rose-600 text-white text-[11px] font-extrabold">✕ Close</button>
+<button type="button" id="cardCloseAdminBtn" onclick="setOverlayScreen('default')" class="px-2.5 py-0.5 rounded bg-rose-600 text-white text-[11px] font-extrabold">✕ Close</button>
 </div>
 <div class="bg-white text-slate-950 px-4 py-2 flex items-center justify-between font-broadcast">
-<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-600"></span><span id="cardTeam1Title" class="text-sm sm:text-lg font-black uppercase">TEAM A</span></div>
+<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-600"></span><span id="cardTeam1Title" class="text-sm sm:text-lg font-black uppercase">ALAMPUR</span></div>
 <div class="px-3 py-0.5 rounded-full bg-purple-900 text-amber-300 text-[10px] sm:text-xs font-black uppercase" id="cardCenterTag">SCORECARD</div>
-<div class="flex items-center gap-2"><span id="cardTeam2Title" class="text-sm sm:text-lg font-black uppercase">TEAM B</span><span class="w-3 h-3 rounded-full bg-emerald-600"></span></div>
+<div class="flex items-center gap-2"><span id="cardTeam2Title" class="text-sm sm:text-lg font-black uppercase">SEER</span><span class="w-3 h-3 rounded-full bg-emerald-600"></span></div>
 </div>
 <div class="icc-sub-bar px-4 py-1 text-center text-[11px] font-black uppercase tracking-wider text-white" id="cardSubTitle">1ST INNINGS • MATCH SUMMARY</div>
 <div id="cardBodyContent" class="p-3 sm:p-4 text-xs sm:text-sm max-h-[62vh] overflow-y-auto"></div>
@@ -97,18 +97,18 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 <div class="tv-capsule rounded-2xl md:rounded-full px-2.5 sm:px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-2">
 <div class="w-full md:w-[34%] flex items-center justify-between gap-2 pr-1">
 <div class="shrink-0 text-center min-w-[74px] border-r-2 border-slate-200 pr-2">
-<div id="ovBatTeamLogo" class="text-xs sm:text-sm font-black uppercase text-slate-900 leading-tight">TEAM A</div>
+<div id="ovBatTeamLogo" class="text-xs sm:text-sm font-black uppercase text-slate-900 leading-tight">ALAMPUR</div>
 <span class="inline-block mt-0.5 px-1.5 bg-sky-100 text-sky-800 rounded text-[9px] font-extrabold uppercase">BATTING</span>
 </div>
 <div class="flex-1 min-w-0 space-y-0.5">
-<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span id="ovStrikerArrow" class="text-rose-600 text-xs font-black">▶</span><span id="ovBat1Name" class="text-xs sm:text-sm font-black text-slate-900 uppercase truncate">Striker</span></div><div class="shrink-0 ml-2 font-broadcast"><span id="ovBat1Runs" class="text-sm sm:text-base font-black text-slate-950">0</span> <span class="text-[11px] font-bold text-slate-500">(<span id="ovBat1Balls">0</span>)</span></div></div>
-<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span id="ovNonStrikerArrow" class="text-rose-600 text-xs font-black opacity-0">▶</span><span id="ovBat2Name" class="text-xs sm:text-sm font-bold text-slate-600 uppercase truncate">Non-Striker</span></div><div class="shrink-0 ml-2 font-broadcast"><span id="ovBat2Runs" class="text-sm sm:text-base font-extrabold text-slate-700">0</span> <span class="text-[11px] font-bold text-slate-500">(<span id="ovBat2Balls">0</span>)</span></div></div>
+<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span id="ovStrikerArrow" class="text-rose-600 text-xs font-black">▶</span><span id="ovBat1Name" class="text-xs sm:text-sm font-black text-slate-900 uppercase truncate">बल्लेबाज 1</span></div><div class="shrink-0 ml-2 font-broadcast"><span id="ovBat1Runs" class="text-sm sm:text-base font-black text-slate-950">0</span> <span class="text-[11px] font-bold text-slate-500">(<span id="ovBat1Balls">0</span>)</span></div></div>
+<div class="flex items-center justify-between"><div class="flex items-center gap-1.5 min-w-0"><span id="ovNonStrikerArrow" class="text-rose-600 text-xs font-black opacity-0">▶</span><span id="ovBat2Name" class="text-xs sm:text-sm font-bold text-slate-600 uppercase truncate">बल्लेबाज 2</span></div><div class="shrink-0 ml-2 font-broadcast"><span id="ovBat2Runs" class="text-sm sm:text-base font-extrabold text-slate-700">0</span> <span class="text-[11px] font-bold text-slate-500">(<span id="ovBat2Balls">0</span>)</span></div></div>
 </div>
 </div>
 
 <div class="w-full md:w-[34%] flex flex-col items-center justify-center shrink-0">
 <div class="center-score-pill w-full rounded-full px-3.5 py-1 flex items-center justify-between gap-2 text-white">
-<div id="ovCenterBatTeam" class="text-xs sm:text-sm md:text-[15px] font-black uppercase tracking-wide truncate max-w-[50%]">TEAM A</div>
+<div id="ovCenterBatTeam" class="text-xs sm:text-sm md:text-[15px] font-black uppercase tracking-wide truncate max-w-[50%]">ALAMPUR</div>
 <div class="flex items-baseline gap-2 shrink-0"><span id="ovRunsWickets" class="font-score text-3xl sm:text-4xl font-bold leading-none">0-0</span><span class="bg-sky-400 text-slate-950 px-2 py-0.5 rounded-full text-[11px] font-black"><span id="ovOvers">0.0</span>/<span id="ovTotalOvers">5</span></span></div>
 </div>
 <div class="bottom-eq-pill w-[94%] rounded-b-xl px-3 py-0.5 text-center text-[10px] sm:text-[11px] font-extrabold text-white uppercase truncate"><span id="ovEquationBar">CRR: 0.00 • P'SHIP: 0 (0)</span></div>
@@ -116,11 +116,11 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 
 <div class="w-full md:w-[32%] flex items-center justify-between gap-2 pl-1">
 <div class="flex-1 min-w-0">
-<div class="flex items-center justify-between mb-1"><span id="ovBowlerName" class="text-xs sm:text-sm font-black text-slate-900 uppercase truncate">Bowler</span><span id="ovBowlerFigs" class="font-broadcast text-xs sm:text-sm font-black text-slate-900 shrink-0 ml-1">0-0 <span class="text-[11px] font-bold text-slate-500">(0.0)</span></span></div>
+<div class="flex items-center justify-between mb-1"><span id="ovBowlerName" class="text-xs sm:text-sm font-black text-slate-900 uppercase truncate">गेंदबाज</span><span id="ovBowlerFigs" class="font-broadcast text-xs sm:text-sm font-black text-slate-900 shrink-0 ml-1">0-0 <span class="text-[11px] font-bold text-slate-500">(0.0)</span></span></div>
 <div id="ovThisOverCircles" class="flex items-center gap-1 overflow-x-auto"><span class="over-circle over-circle-empty"></span><span class="over-circle over-circle-empty"></span><span class="over-circle over-circle-empty"></span><span class="over-circle over-circle-empty"></span><span class="over-circle over-circle-empty"></span><span class="over-circle over-circle-empty"></span></div>
 </div>
 <div class="shrink-0 text-center min-w-[72px] border-l-2 border-slate-200 pl-2">
-<div id="ovBowlTeamLogo" class="text-xs sm:text-sm font-black uppercase text-slate-900 leading-tight">TEAM B</div>
+<div id="ovBowlTeamLogo" class="text-xs sm:text-sm font-black uppercase text-slate-900 leading-tight">SEER</div>
 <span class="inline-block mt-0.5 px-1.5 bg-rose-100 text-rose-800 rounded text-[9px] font-extrabold uppercase">BOWLING</span>
 </div>
 </div>
@@ -129,82 +129,86 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 </section>
 
 <main class="admin-section max-w-4xl mx-auto p-3 space-y-4 pb-20">
+<!-- 1. SCORING CONTROL PANEL -->
 <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm space-y-2.5">
 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
 <h2 class="text-xs sm:text-sm font-black uppercase text-slate-700"><i class="fa-solid fa-gamepad text-emerald-600 mr-1"></i>Control Panel</h2>
-<div class="flex items-center gap-2 text-xs font-extrabold"><span id="adminFreeHitIndicator" class="hidden px-2 py-0.5 rounded bg-rose-600 text-white animate-pulse">FREE HIT</span><span class="text-slate-500">Striker: <strong id="adminStrikerLabel" class="text-rose-600">Striker</strong></span></div>
+<div class="flex items-center gap-2 text-xs font-extrabold"><span id="adminFreeHitIndicator" class="hidden px-2 py-0.5 rounded bg-rose-600 text-white animate-pulse">FREE HIT</span><span class="text-slate-500">Striker: <strong id="adminStrikerLabel" class="text-rose-600">बल्लेबाज 1</strong></span></div>
 </div>
 <div class="grid grid-cols-5 gap-2">
-<button onclick="scoreBall(0,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">0</button>
-<button onclick="scoreBall(1,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">1</button>
-<button onclick="scoreBall(2,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">2</button>
-<button onclick="scoreBall(3,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">3</button>
-<button onclick="scoreBall(4,'legal')" class="ctrl-btn h-12 rounded-xl bg-blue-600 text-white font-broadcast text-xl font-black">4</button>
+<button type="button" onclick="scoreBall(0,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">0</button>
+<button type="button" onclick="scoreBall(1,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">1</button>
+<button type="button" onclick="scoreBall(2,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">2</button>
+<button type="button" onclick="scoreBall(3,'legal')" class="ctrl-btn h-12 rounded-xl bg-slate-50 border border-slate-200 font-broadcast text-xl font-black">3</button>
+<button type="button" onclick="scoreBall(4,'legal')" class="ctrl-btn h-12 rounded-xl bg-blue-600 text-white font-broadcast text-xl font-black">4</button>
 </div>
 <div class="grid grid-cols-5 gap-2">
-<button onclick="scoreBall(6,'legal')" class="ctrl-btn h-12 rounded-xl bg-orange-600 text-white font-broadcast text-xl font-black">6</button>
-<button onclick="document.getElementById('customRunsModal').classList.remove('hidden')" class="ctrl-btn h-12 rounded-xl bg-purple-600 text-white font-broadcast text-lg font-black">+/-</button>
-<button onclick="openExtraRunsModal('wide')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">WD</button>
-<button onclick="openExtraRunsModal('noball')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">NB</button>
-<button onclick="openExtraRunsModal('legbye')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">LB</button>
+<button type="button" onclick="scoreBall(6,'legal')" class="ctrl-btn h-12 rounded-xl bg-orange-600 text-white font-broadcast text-xl font-black">6</button>
+<button type="button" onclick="document.getElementById('customRunsModal').classList.remove('hidden')" class="ctrl-btn h-12 rounded-xl bg-purple-600 text-white font-broadcast text-lg font-black">+/-</button>
+<button type="button" onclick="openExtraRunsModal('wide')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">WD</button>
+<button type="button" onclick="openExtraRunsModal('noball')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">NB</button>
+<button type="button" onclick="openExtraRunsModal('legbye')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">LB</button>
 </div>
 <div class="grid grid-cols-5 gap-2">
-<button onclick="openExtraRunsModal('bye')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">B</button>
-<button onclick="openWicketModal()" class="ctrl-btn h-12 rounded-xl bg-rose-600 text-white font-broadcast text-base font-black">OUT</button>
-<button onclick="undoLastAction()" class="ctrl-btn h-12 rounded-xl bg-slate-600 text-white font-broadcast text-sm font-black">UNDO</button>
-<button onclick="swapStrike()" class="ctrl-btn h-12 rounded-xl bg-indigo-600 text-white font-broadcast text-sm font-black">SWAP</button>
-<button onclick="openEndInningsModal(false)" class="ctrl-btn h-12 rounded-xl bg-slate-900 text-white font-broadcast text-xs font-black">END INN</button>
+<button type="button" onclick="openExtraRunsModal('bye')" class="ctrl-btn h-12 rounded-xl bg-amber-600 text-white font-broadcast text-base font-black">B</button>
+<button type="button" onclick="openWicketModal()" class="ctrl-btn h-12 rounded-xl bg-rose-600 text-white font-broadcast text-base font-black">OUT</button>
+<button type="button" onclick="undoLastAction()" class="ctrl-btn h-12 rounded-xl bg-slate-600 text-white font-broadcast text-sm font-black">UNDO</button>
+<button type="button" onclick="swapStrike()" class="ctrl-btn h-12 rounded-xl bg-indigo-600 text-white font-broadcast text-sm font-black">SWAP</button>
+<button type="button" onclick="openEndInningsModal(false)" class="ctrl-btn h-12 rounded-xl bg-slate-900 text-white font-broadcast text-xs font-black">END INN</button>
 </div>
 <div class="grid grid-cols-12 gap-2">
-<button id="btnPowerplay" onclick="togglePowerplay()" class="ctrl-btn col-span-3 h-11 rounded-xl bg-slate-600 text-white font-extrabold text-xs">PP: OFF</button>
-<button onclick="openChangeBowlerModal(false)" class="ctrl-btn col-span-5 h-11 rounded-xl bg-purple-600 text-white font-extrabold text-xs">Change Bowl</button>
-<button onclick="openRetireBatterModal()" class="ctrl-btn col-span-4 h-11 rounded-xl bg-pink-600 text-white font-extrabold text-xs">Retire Bat</button>
+<button type="button" id="btnPowerplay" onclick="togglePowerplay()" class="ctrl-btn col-span-3 h-11 rounded-xl bg-slate-600 text-white font-extrabold text-xs">PP: OFF</button>
+<button type="button" onclick="openChangeBowlerModal(false)" class="ctrl-btn col-span-5 h-11 rounded-xl bg-purple-600 text-white font-extrabold text-xs">Change Bowl</button>
+<button type="button" onclick="openRetireBatterModal()" class="ctrl-btn col-span-4 h-11 rounded-xl bg-pink-600 text-white font-extrabold text-xs">Retire Bat</button>
 </div>
 </div>
 
+<!-- 2. TEAMS & PLAYERS SETUP -->
 <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm space-y-3">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 <div class="space-y-2">
 <label class="text-[11px] font-black uppercase text-slate-600 block">TEAMS & STRIKER</label>
 <div class="flex gap-1.5"><input type="text" id="inputBatTeam" oninput="updateSetupFields()" placeholder="Batting Team" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-extrabold uppercase"><input type="text" id="inputBowlTeam" oninput="updateSetupFields()" placeholder="Bowling Team" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-extrabold uppercase"></div>
-<div class="flex gap-1.5"><input type="text" id="inputBat1Name" oninput="updateBattersNames()" placeholder="Striker Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">Set</button></div>
+<div class="flex gap-1.5"><input type="text" id="inputBat1Name" oninput="updateBattersNames()" placeholder="Striker Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button type="button" onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">Set</button></div>
 </div>
 <div class="space-y-2">
 <label class="text-[11px] font-black uppercase text-slate-600 block">NON-STRIKER & BOWLER</label>
-<div class="flex gap-1.5"><input type="text" id="inputBat2Name" oninput="updateBattersNames()" placeholder="Non-Striker Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">Set</button></div>
-<div class="flex gap-1.5"><input type="text" id="inputBowlerDirect" placeholder="New Bowler Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button onclick="setBowlerDirect()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">+ Add</button></div>
+<div class="flex gap-1.5"><input type="text" id="inputBat2Name" oninput="updateBattersNames()" placeholder="Non-Striker Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button type="button" onclick="updateBattersNames()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">Set</button></div>
+<div class="flex gap-1.5"><input type="text" id="inputBowlerDirect" placeholder="New Bowler Name" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-bold"><button type="button" onclick="setBowlerDirect()" class="px-3 py-2 rounded-xl bg-emerald-700 text-white text-xs font-extrabold">+ Add</button></div>
 </div>
 </div>
 </div>
 
+<!-- 3. BROADCAST CONTROLLER -->
 <div class="bg-slate-950 text-white border border-slate-800 rounded-2xl p-3.5 shadow-lg space-y-3">
 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
 <span class="text-xs font-black uppercase text-amber-400"><i class="fa-solid fa-tv mr-1"></i>Broadcast Controller</span>
-<div class="flex gap-1 bg-slate-900 p-1 rounded-lg"><button id="pillInn1" onclick="switchInningsBadge(1)" class="px-2.5 py-0.5 rounded bg-emerald-600 text-xs font-extrabold">1st Inn</button><button id="pillInn2" onclick="openEndInningsModal(false)" class="px-2.5 py-0.5 rounded text-slate-300 text-xs font-extrabold">2nd Inn</button></div>
+<div class="flex gap-1 bg-slate-900 p-1 rounded-lg"><button type="button" id="pillInn1" onclick="switchInningsBadge(1)" class="px-2.5 py-0.5 rounded bg-emerald-600 text-xs font-extrabold">1st Inn</button><button type="button" id="pillInn2" onclick="openEndInningsModal(false)" class="px-2.5 py-0.5 rounded text-slate-300 text-xs font-extrabold">2nd Inn</button></div>
 </div>
 <div class="flex gap-2">
 <input type="text" id="inputCustomTicker" placeholder="Custom ticker / Sponsor text..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
-<button onclick="sendCustomTicker()" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-xs font-extrabold">Send</button>
-<button onclick="clearCustomTicker()" class="px-2.5 py-2 rounded-xl bg-slate-800 text-xs font-bold">✕</button>
+<button type="button" onclick="sendCustomTicker()" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-xs font-extrabold">Send</button>
+<button type="button" onclick="clearCustomTicker()" class="px-2.5 py-2 rounded-xl bg-slate-800 text-xs font-bold">✕</button>
 </div>
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-<button onclick="setOverlayScreen('default')" class="ctrl-btn py-2.5 rounded-xl bg-blue-600 text-xs font-extrabold">Default</button>
-<button onclick="setOverlayScreen('batting')" class="ctrl-btn py-2.5 rounded-xl bg-emerald-600 text-xs font-extrabold">Batting Card</button>
-<button onclick="setOverlayScreen('bowling')" class="ctrl-btn py-2.5 rounded-xl bg-amber-600 text-xs font-extrabold">Bowling Card</button>
-<button onclick="setOverlayScreen('summary')" class="ctrl-btn py-2.5 rounded-xl bg-rose-600 text-xs font-extrabold">Match Summary</button>
-<button onclick="setOverlayScreen('mvp')" class="ctrl-btn py-2.5 rounded-xl bg-yellow-600 text-xs font-extrabold">MVP / POTM</button>
-<button onclick="setOverlayScreen('target')" class="ctrl-btn py-2.5 rounded-xl bg-purple-600 text-xs font-extrabold">Need / Target</button>
-<button onclick="setOverlayScreen('projected')" class="ctrl-btn py-2.5 rounded-xl bg-lime-600 text-xs font-extrabold">Projected</button>
-<button onclick="setOverlayScreen('partnership')" class="ctrl-btn py-2.5 rounded-xl bg-teal-600 text-xs font-extrabold">Partnership</button>
-<button onclick="triggerThirdUmpire()" class="ctrl-btn py-2.5 rounded-xl bg-fuchsia-700 text-xs font-extrabold">3rd Umpire</button>
-<button onclick="setOverlayScreen('lastout')" class="ctrl-btn py-2.5 rounded-xl bg-orange-600 text-xs font-extrabold">Last Out</button>
-<button onclick="setOverlayScreen('result')" class="ctrl-btn py-2.5 rounded-xl bg-sky-600 text-xs font-extrabold">Match Result</button>
-<button onclick="setOverlayScreen('tvoff')" class="ctrl-btn py-2.5 rounded-xl bg-red-600 text-xs font-extrabold">TV Off</button>
+<button type="button" onclick="setOverlayScreen('default')" class="ctrl-btn py-2.5 rounded-xl bg-blue-600 text-xs font-extrabold">Default</button>
+<button type="button" onclick="setOverlayScreen('batting')" class="ctrl-btn py-2.5 rounded-xl bg-emerald-600 text-xs font-extrabold">Batting Card</button>
+<button type="button" onclick="setOverlayScreen('bowling')" class="ctrl-btn py-2.5 rounded-xl bg-amber-600 text-xs font-extrabold">Bowling Card</button>
+<button type="button" onclick="setOverlayScreen('summary')" class="ctrl-btn py-2.5 rounded-xl bg-rose-600 text-xs font-extrabold">Match Summary</button>
+<button type="button" onclick="setOverlayScreen('mvp')" class="ctrl-btn py-2.5 rounded-xl bg-yellow-600 text-xs font-extrabold">MVP / POTM</button>
+<button type="button" onclick="setOverlayScreen('target')" class="ctrl-btn py-2.5 rounded-xl bg-purple-600 text-xs font-extrabold">Need / Target</button>
+<button type="button" onclick="setOverlayScreen('projected')" class="ctrl-btn py-2.5 rounded-xl bg-lime-600 text-xs font-extrabold">Projected</button>
+<button type="button" onclick="setOverlayScreen('partnership')" class="ctrl-btn py-2.5 rounded-xl bg-teal-600 text-xs font-extrabold">Partnership</button>
+<button type="button" onclick="triggerThirdUmpire()" class="ctrl-btn py-2.5 rounded-xl bg-fuchsia-700 text-xs font-extrabold">3rd Umpire</button>
+<button type="button" onclick="setOverlayScreen('lastout')" class="ctrl-btn py-2.5 rounded-xl bg-orange-600 text-xs font-extrabold">Last Out</button>
+<button type="button" onclick="setOverlayScreen('result')" class="ctrl-btn py-2.5 rounded-xl bg-sky-600 text-xs font-extrabold">Match Result</button>
+<button type="button" onclick="setOverlayScreen('tvoff')" class="ctrl-btn py-2.5 rounded-xl bg-red-600 text-xs font-extrabold">TV Off</button>
 </div>
 </div>
 
+<!-- 4. MATCH RULES & RESET -->
 <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm space-y-2.5">
-<div class="flex items-center justify-between border-b border-slate-100 pb-2"><h2 class="text-xs font-black uppercase text-rose-600">Match Overs & Reset</h2><button onclick="openResetMatchModal()" class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold shadow">Reset New Match</button></div>
+<div class="flex items-center justify-between border-b border-slate-100 pb-2"><h2 class="text-xs font-black uppercase text-rose-600">Match Overs & Reset</h2><button type="button" onclick="resetFullMatch()" class="px-3 py-1 rounded-lg bg-rose-600 text-white text-xs font-extrabold">Reset New Match</button></div>
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
 <div><label class="text-[10px] font-bold text-slate-500">Tournament</label><input type="text" id="inputTournament" oninput="updateSetupFields()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-xs font-bold"></div>
 <div><label class="text-[10px] font-bold text-slate-500">Total Overs</label><input type="number" id="inputTotalOvers" value="5" oninput="updateMatchRules()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2 py-1.5 text-xs font-extrabold"></div>
@@ -214,20 +218,18 @@ body.overlay-only #cardCloseAdminBtn{display:none!important}
 </div>
 </main>
 
-<!-- CLEAN NEW MATCH SETUP & RESET MODAL -->
-<div id="resetMatchModal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-<div class="bg-slate-900 border-2 border-sky-500 text-white rounded-2xl max-w-md w-full p-5 space-y-3 shadow-2xl">
+<!-- AUTO INNINGS BREAK / 2ND INNINGS SETUP MODAL -->
+<div id="inningsModal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+<div class="bg-slate-900 border-2 border-emerald-500 text-white rounded-2xl max-w-md w-full p-5 space-y-3 shadow-2xl">
 <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-<div><span class="text-[10px] font-black px-2 py-0.5 rounded bg-sky-500 text-slate-950 uppercase">NEW MATCH SETUP</span><h3 class="text-base font-black text-white mt-1">नया मैच शुरू करें (0-0 स्कोर व खाली गेंदें)</h3></div>
-<button onclick="document.getElementById('resetMatchModal').classList.add('hidden')" class="text-slate-400">✕</button>
+<div><span id="innModalBadge" class="text-[10px] font-black px-2 py-0.5 rounded bg-emerald-500 text-slate-950 uppercase">1ST INNINGS COMPLETE!</span><h3 class="text-base font-black text-white mt-1">दूसरी पारी (Run Chase) शुरू करें</h3></div>
+<button type="button" onclick="document.getElementById('inningsModal').classList.add('hidden')" class="text-slate-400">✕</button>
 </div>
-<div class="grid grid-cols-2 gap-2">
-<div><label class="text-[10px] text-slate-400 font-bold">Batting Team:</label><input type="text" id="nmBatTeam" placeholder="TEAM A" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-extrabold uppercase text-white"></div>
-<div><label class="text-[10px] text-slate-400 font-bold">Bowling Team:</label><input type="text" id="nmBowlTeam" placeholder="TEAM B" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-extrabold uppercase text-white"></div>
+<div id="innModalSummaryText" class="bg-slate-950 p-2.5 rounded-xl border border-emerald-500/40 text-xs font-extrabold text-amber-300 text-center">TARGET: 0 RUNS</div>
+<div class="space-y-2">
+<div><label class="text-[11px] text-slate-400 font-bold">2nd Innings Striker (बल्लेबाज 1):</label><input type="text" id="inn2Bat1" placeholder="ओपनर 1 का नाम..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white"></div>
+<div><label class="text-[11px] text-slate-400 font-bold">2nd Innings Non-Striker (बल्लेबाज 2):</label><input type="text" id="inn2Bat2" placeholder="ओपनर 2 का नाम..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white"></div>
+<div><label class="text-[11px] text-slate-400 font-bold">Opening Bowler (पहला बॉलर):</label><input type="text" id="inn2Bowler" placeholder="गेंदबाज का नाम..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-bold text-white"></div>
 </div>
-<div class="grid grid-cols-2 gap-2">
-<div><label class="text-[10px] text-slate-400 font-bold">Striker (बल्लेबाज 1):</label><input type="text" id="nmBat1" placeholder="Striker का नाम" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-bold text-white"></div>
-<div><label class="text-[10px] text-slate-400 font-bold">Non-Striker (बल्लेबाज 2):</label><input type="text" id="nmBat2" placeholder="Non-Striker का नाम" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-bold text-white"></div>
-</div>
-<div class="grid grid-cols-2 gap-2">
-<div><label class="text-
+<div class="flex justify-end gap-2 pt-2">
+<button type="button" onclick
